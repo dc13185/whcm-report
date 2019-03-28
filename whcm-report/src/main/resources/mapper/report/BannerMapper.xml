@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.BannerMapper">
+    
+    <resultMap type="Banner" id="BannerResult">
+        <result property="bannerId"    column="banner_id"    />
+        <result property="bannerUrl"    column="banner_url"    />
+    </resultMap>
+	
+	<sql id="selectBannerVo">
+        select banner_id, banner_url from report_banner
+    </sql>
+	
+    <select id="selectBannerList" parameterType="Banner" resultMap="BannerResult">
+        <include refid="selectBannerVo"/>
+        <where>  
+            <if test="bannerId != null "> and banner_id = #{bannerId}</if>
+             <if test="bannerUrl != null  and bannerUrl != '' "> and banner_url = #{bannerUrl}</if>
+         </where>
+    </select>
+    
+    <select id="selectBannerById" parameterType="Integer" resultMap="BannerResult">
+        <include refid="selectBannerVo"/>
+        where banner_id = #{bannerId}
+    </select>
+        
+    <insert id="insertBanner" parameterType="Banner" useGeneratedKeys="true" keyProperty="bannerId">
+        insert into report_banner
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bannerUrl != null  and bannerUrl != ''  ">banner_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bannerUrl != null  and bannerUrl != ''  ">#{bannerUrl},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateBanner" parameterType="Banner">
+        update report_banner
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bannerUrl != null  and bannerUrl != ''  ">banner_url = #{bannerUrl},</if>
+        </trim>
+        where banner_id = #{bannerId}
+    </update>
+
+	<delete id="deleteBannerById" parameterType="Integer">
+        delete from report_banner where banner_id = #{bannerId}
+    </delete>
+	
+    <delete id="deleteBannerByIds" parameterType="String">
+        delete from report_banner where banner_id in 
+        <foreach item="bannerId" collection="array" open="(" separator="," close=")">
+            #{bannerId}
+        </foreach>
+    </delete>
+    
+</mapper>
