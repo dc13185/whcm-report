@@ -32,6 +32,7 @@
 		<jsoup.version>1.11.3</jsoup.version>
 		<poi.version>3.17</poi.version>
 		<velocity.version>1.7</velocity.version>
+		<qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
 	</properties>
 	
 	<!-- 依赖声明 -->
@@ -165,6 +166,22 @@
 	            <artifactId>velocity</artifactId>
 	            <version>${velocity.version}</version>
 	        </dependency>
+
+			<!-- 七牛云SDK -->
+			<dependency>
+				<groupId>com.qiniu</groupId>
+				<artifactId>qiniu-java-sdk</artifactId>
+				<version>${qiniu.version}</version>
+			</dependency>
+
+			<!--lombok插件-->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>1.16.20</version>
+				<scope>provided</scope>
+			</dependency>
+
             
             <!-- 定时任务-->
 			<dependency>
@@ -200,6 +217,13 @@
 	            <artifactId>ruoyi-common</artifactId>
 	            <version>${ruoyi.version}</version>
 	        </dependency>
+
+			<!-- 业务  -->
+			<dependency>
+				<groupId>com.ruoyi</groupId>
+				<artifactId>whcm-report</artifactId>
+				<version>${ruoyi.version}</version>
+			</dependency>
 	        
         </dependencies>
     </dependencyManagement>

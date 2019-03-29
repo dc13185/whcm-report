@@ -33,7 +33,7 @@ public class BannerController extends BaseController
 	
 	@Autowired
 	private IBannerService bannerService;
-	
+
 	@RequiresPermissions("report:banner:view")
 	@GetMapping()
 	public String banner()
@@ -68,7 +68,7 @@ public class BannerController extends BaseController
         return util.exportExcel(list, "banner");
     }
 	
-	/**
+	/**      -
 	 * 新增轮播图
 	 */
 	@GetMapping("/add")

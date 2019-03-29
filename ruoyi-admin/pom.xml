@@ -59,6 +59,12 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
+
+        <!-- 业务代码 ： 武传毕业汇演-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>whcm-report</artifactId>
+        </dependency>
         
     </dependencies>
 
