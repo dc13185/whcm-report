@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author ruoyi
  */
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-@ComponentScan(value = {"com.*"})
+@ComponentScan(value = {"com.ruoyi.*","com.whcm.*"})
 @MapperScan("com.*.*.mapper")
 public class RuoYiApplication
 {
