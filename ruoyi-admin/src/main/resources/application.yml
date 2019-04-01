@@ -121,3 +121,18 @@ xss:
   excludes: /system/notice/*
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+
+#七牛云设置
+qiniu:
+  #秘钥
+  ACCESS_KEY: 2GzvBFr0wjzDYxS8y9cnH4tlfCwjrYk-Yk52FYQo
+  SECRET_KEY: IkLX1-wEJpqRN8tsnbL8_WAhxzYFc1eDN8bYTh5k
+  #域名
+  DOMAIN: img.dchope.cn
+  #空间名
+  BUCKET_NAME: dchome
+
+
+
+
