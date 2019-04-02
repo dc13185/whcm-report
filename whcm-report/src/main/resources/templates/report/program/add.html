@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-program-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">节目名称：</label>
+				<div class="col-sm-8">
+					<input id="programName" name="programName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">节目图片URL：</label>
+				<div class="col-sm-8">
+					<input id="programPictureurl" name="programPictureurl" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">选择学院：</label>
+				<div class="col-sm-8">
+					<select name="status" >
+						<tr  th:each="type : ${types}">
+							<option th:value="${type.typeId}" th:text="${type.typeName}">${user.typeName}</option>
+						</tr>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">节目内容 ：</label>
+				<div class="col-sm-8">
+					<input id="programContent" name="programContent" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "report/program"
+		$("#form-program-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-program-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

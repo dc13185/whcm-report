@@ -11,9 +11,8 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								：<input type="text" name="bannerUrl"/>
+								节目名称：<input type="text" name="programName"/>
 							</li>
-
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -24,16 +23,16 @@
 			</div>
 			
 	        <div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="report:banner:add">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="report:program:add">
 					<i class="fa fa-plus"></i> 添加
 				</a>
-				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="report:banner:edit">
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="report:program:edit">
 					<i class="fa fa-edit"></i> 修改
 				</a>
-				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="report:banner:remove">
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="report:program:remove">
 					<i class="fa fa-remove"></i> 删除
 				</a>
-				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="report:banner:export">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="report:program:export">
 						<i class="fa fa-download"></i> 导出
 				 </a>
 			</div>
@@ -44,9 +43,9 @@
 	</div>
     <div th:include="include :: footer"></div>
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('report:banner:edit')}]];
-        var removeFlag = [[${@permission.hasPermi('report:banner:remove')}]];
-        var prefix = ctx + "report/banner";
+        var editFlag = [[${@permission.hasPermi('report:program:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('report:program:remove')}]];
+        var prefix = ctx + "report/program";
 
         $(function() {
             var options = {
@@ -55,31 +54,43 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
 				exportUrl: prefix + "/export",
-                modalName: "轮播图",
+                modalName: "节目",
 		        showExport: true,
                 columns: [{
 		            checkbox: true
 		        },
 				{
-					field : 'bannerId', 
-					title : '',
+					field : 'programId', 
+					title : '节目Id',
 					visible: false
 				},
 				{
-					field : 'bannerUrl', 
-					title : '',
-					sortable: true,
-					formatter: function(value, row, index) {
-						return '<img style="width:300px;height:200px;"  src="'+value+'"/>';
-					}
+					field : 'programName', 
+					title : '节目名称',
+					sortable: true
+				},
+				{
+					field : 'programPictureurl', 
+					title : '节目图片URL',
+					sortable: true
+				},
+				{
+					field : 'typeId', 
+					title : '类型Id',
+					sortable: true
+				},
+				{
+					field : 'programContent', 
+					title : '节目内容',
+					sortable: true
 				},
 		        {
 		            title: '操作',
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		            	var actions = [];
-		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.bannerId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.bannerId + '\')"><i class="fa fa-remove"></i>删除</a>');
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.programId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.programId + '\')"><i class="fa fa-remove"></i>删除</a>');
 						return actions.join('');
 		            }
 		        }]

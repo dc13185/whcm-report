@@ -3,6 +3,8 @@ package com.whcm.report.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.ruoyi.common.config.Global;
+import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.qiniu.QiniuUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -92,16 +94,8 @@ public class BannerController extends BaseController
 	public AjaxResult addSave(MultipartFile file, Banner banner)
 	{
 		try {
-			// 上传文件名
-			String fileName = file.getOriginalFilename();
-			int suffixIndex = fileName.lastIndexOf(".");
-			String suffix = fileName.substring(suffixIndex);
-			// 随机取文件名
-			String name = "banner/"+UUID.randomUUID().toString()+suffix;
-			//上传至七牛云
-			String bannerUrl = QiniuUtils.updateFile(file,name);
-			//存入数据库
-			banner.setBannerUrl(bannerUrl);
+			String fileName = FileUploadUtils.uploadBusinessFile(file);
+			banner.setBannerUrl(fileName);
 			return toAjax(bannerService.insertBanner(banner));
 		}catch (Exception e){
 			logger.info("save banner error:{}",e.getMessage());

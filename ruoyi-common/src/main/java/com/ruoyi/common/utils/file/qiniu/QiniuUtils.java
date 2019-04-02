@@ -135,7 +135,7 @@ public class QiniuUtils {
                 //解析上传成功的结果
                 DefaultPutRet putRet;
                 putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-                String url = DOMAIN + "//" + putRet.key;
+                String url = DOMAIN + "/" + putRet.key;
                 return url;
 
             } catch (QiniuException ex) {

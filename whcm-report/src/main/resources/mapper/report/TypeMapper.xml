@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.TypeMapper">
+    
+    <resultMap type="Type" id="TypeResult">
+        <result property="typeId"    column="type_id"    />
+        <result property="typeName"    column="type_name"    />
+    </resultMap>
+	
+	<sql id="selectTypeVo">
+        select type_id, type_name from report_type
+    </sql>
+
+    <select id="selectTypeAll"  resultMap="TypeResult">
+        <include refid="selectTypeVo"/>
+    </select>
+
+    <select id="selectTypeList" parameterType="Type" resultMap="TypeResult">
+        <include refid="selectTypeVo"/>
+        <where>  
+            <if test="typeId != null "> and type_id = #{typeId}</if>
+             <if test="typeName != null  and typeName != '' "> and type_name = #{typeName}</if>
+         </where>
+    </select>
+    
+    <select id="selectTypeById" parameterType="Integer" resultMap="TypeResult">
+        <include refid="selectTypeVo"/>
+        where type_id = #{typeId}
+    </select>
+        
+    <insert id="insertType" parameterType="Type" useGeneratedKeys="true" keyProperty="typeId">
+        insert into report_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="typeName != null  and typeName != ''  ">type_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="typeName != null  and typeName != ''  ">#{typeName},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateType" parameterType="Type">
+        update report_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typeName != null  and typeName != ''  ">type_name = #{typeName},</if>
+        </trim>
+        where type_id = #{typeId}
+    </update>
+
+	<delete id="deleteTypeById" parameterType="Integer">
+        delete from report_type where type_id = #{typeId}
+    </delete>
+	
+    <delete id="deleteTypeByIds" parameterType="String">
+        delete from report_type where type_id in 
+        <foreach item="typeId" collection="array" open="(" separator="," close=")">
+            #{typeId}
+        </foreach>
+    </delete>
+    
+</mapper>

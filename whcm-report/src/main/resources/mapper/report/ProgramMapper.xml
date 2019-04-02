@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.ProgramMapper">
+
+    <resultMap type="Program" id="ProgramResult">
+        <result property="programId"    column="program_id"    />
+        <result property="programName"    column="program_name"    />
+        <result property="programPictureurl"    column="program_pictureurl"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="programContent"    column="program_content"    />
+        <result property="typeName"    column="type_name"    />
+    </resultMap>
+
+	<sql id="selectProgramVo">
+        select program_id, program_name, program_pictureurl, type_id, program_content from report_program
+    </sql>
+
+    <select id="selectProgramList" parameterType="Program" resultMap="ProgramResult">
+        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content ,t.type_name
+        FROM report_program p LEFT JOIN report_type t ON p.type_id = t.type_id
+        <where>
+            <if test="programId != null "> and p.program_id = #{programId}</if>
+             <if test="programName != null  and programName != '' "> and p.program_name = #{programName}</if>
+         </where>
+    </select>
+
+    <select id="selectProgramById" parameterType="Integer" resultMap="ProgramResult">
+        <include refid="selectProgramVo"/>
+        where program_id = #{programId}
+    </select>
+
+    <insert id="insertProgram" parameterType="Program" useGeneratedKeys="true" keyProperty="programId">
+        insert into report_program
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="programName != null  and programName != ''  ">program_name,</if>
+			<if test="programPictureurl != null  and programPictureurl != ''  ">program_pictureurl,</if>
+			<if test="typeId != null  ">type_id,</if>
+			<if test="programContent != null  and programContent != ''  ">program_content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="programName != null  and programName != ''  ">#{programName},</if>
+			<if test="programPictureurl != null  and programPictureurl != ''  ">#{programPictureurl},</if>
+			<if test="typeId != null  ">#{typeId},</if>
+			<if test="programContent != null  and programContent != ''  ">#{programContent},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProgram" parameterType="Program">
+        update report_program
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="programName != null  and programName != ''  ">program_name = #{programName},</if>
+            <if test="programPictureurl != null  and programPictureurl != ''  ">program_pictureurl = #{programPictureurl},</if>
+            <if test="typeId != null  ">type_id = #{typeId},</if>
+            <if test="programContent != null  and programContent != ''  ">program_content = #{programContent},</if>
+        </trim>
+        where program_id = #{programId}
+    </update>
+
+	<delete id="deleteProgramById" parameterType="Integer">
+        delete from report_program where program_id = #{programId}
+    </delete>
+
+    <delete id="deleteProgramByIds" parameterType="String">
+        delete from report_program where program_id in
+        <foreach item="programId" collection="array" open="(" separator="," close=")">
+            #{programId}
+        </foreach>
+    </delete>
+
+</mapper>

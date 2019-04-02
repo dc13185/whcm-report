@@ -29,6 +29,13 @@ public class Global
      */
     private static Map<String, String> map = new HashMap<String, String>();
 
+    /**
+    *  业务文件存放地址(绝对路径)
+    * */
+    private static String businessFile;
+
+    public static String businessPath = "/profile/business/";
+
     private Global()
     {
     }
@@ -108,6 +115,7 @@ public class Global
         return getConfig("ruoyi.profile");
     }
 
+
     /**
      * 获取头像上传路径
      */
@@ -115,6 +123,19 @@ public class Global
     {
         return getConfig("ruoyi.profile") + "avatar/";
     }
+
+    /**
+     * 获取业务文件上传路径
+     * */
+    public static String getBusinessFile(){
+        if(StringUtils.isEmpty(businessFile)){
+            businessFile = getConfig("ruoyi.profile") + "business/";
+        }
+        return businessFile;
+    }
+
+
+
 
     /**
      * 获取下载路径

@@ -2,12 +2,19 @@ package com.ruoyi.common.utils.file;
 
 import java.io.File;
 import java.io.IOException;
+
+import com.ruoyi.common.utils.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.exception.file.FileNameLengthLimitExceededException;
 import com.ruoyi.common.exception.file.FileSizeLimitExceededException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.security.Md5Utils;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * 文件上传工具类
@@ -36,6 +43,11 @@ public class FileUploadUtils
      */
     public static final String IMAGE_JPG_EXTENSION = ".jpg";
 
+    /**
+     * 项目的url
+     * */
+    private static String baseUrl;
+
     private static int counter = 0;
 
     public static void setDefaultBaseDir(String defaultBaseDir)
@@ -46,6 +58,26 @@ public class FileUploadUtils
     public static String getDefaultBaseDir()
     {
         return defaultBaseDir;
+    }
+
+    /**
+    * @Description:
+    * @Param: []
+    * @return: java.lang.String 返回项目的url
+    * @Author: dong.chao
+    * @Date: 2019/4/2
+    */
+    private static String getBaseUrl(){
+        if(StringUtils.isEmpty(baseUrl)){
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            //String scheme = request.getScheme();//http
+            String serverName = request.getServerName();//localhost
+            int serverPort = request.getServerPort();//8080
+            String contextPath = request.getContextPath();//项目名
+            String url = serverName+":"+serverPort+contextPath;
+            baseUrl = url;
+        }
+        return baseUrl;
     }
 
     /**
@@ -60,6 +92,27 @@ public class FileUploadUtils
         try
         {
             return upload(getDefaultBaseDir(), file, FileUploadUtils.IMAGE_JPG_EXTENSION);
+        }
+        catch (Exception e)
+        {
+            throw new IOException(e.getMessage(), e);
+        }
+    }
+
+
+    /**
+    * @Description: 上传业务文件
+    * @Param: [baseDir, file]
+    * @return: java.lang.String 返回url
+    * @Author: dong.chao
+    * @Date: 2019/4/2test-controller
+    */
+    public static String uploadBusinessFile( MultipartFile file) throws IOException{
+        try
+        {
+            String fileUrl =  getBaseUrl()+"/profile/business/"+upload(Global.getBusinessFile(), file, FileUploadUtils.IMAGE_JPG_EXTENSION);
+
+            return fileUrl;
         }
         catch (Exception e)
         {
