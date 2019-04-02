@@ -8,10 +8,13 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
-import com.ruoyi.common.utils.file.qiniu.domain.MyPutRet;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -24,23 +27,19 @@ import java.io.UnsupportedEncodingException;
  * @create: 2019-03-29 11:47
  * @description: 七牛云上传工具类
  **/
+@Component
 public class QiniuUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QiniuUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(QiniuUtils.class);
 
-    //设置好账号的ACCESS_KEY和SECRET_KEY
-    private static String ACCESS_KEY = "2GzvBFr0wjzDYxS8y9cnH4tlfCwjrYk-Yk52FYQo";
-
-    private static String SECRET_KEY = "IkLX1-wEJpqRN8tsnbL8_WAhxzYFc1eDN8bYTh5k";
 
     //域名
-    private static String DOMAIN = "img.dchope.cn";
-
+    private static String DOMAIN;
     //要上传的空间
-    private static String BUCKET_NAME = "dchome"; //对应要上传到七牛上 你的那个路径（自己建文件夹 注意设置公开）
+    private static String BUCKET_NAME ; //对应要上传到七牛上 你的那个路径（自己建文件夹 注意设置公开）
 
     //密钥配置
-    private static Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+    private static Auth auth ;
 
     //构造一个带指定Zone对象的配置类  zone2 -> 华南地区
     private static Configuration cfg = new Configuration(Zone.zone2());
@@ -54,12 +53,36 @@ public class QiniuUtils {
 
 
 
+    @Value(value = "${qiniu.domain}")
+    public void setDOMAIN(String DOMAIN) {
+        QiniuUtils.DOMAIN = DOMAIN;
+    }
 
-    public static String getUpToken(){
-       if(StringUtils.isBlank(upToken)){
-           upToken = auth.uploadToken(BUCKET_NAME);
+
+    @Value(value = "${qiniu.bucket_name}")
+    public  void setBucketName(String bucketName) {
+        QiniuUtils.BUCKET_NAME = bucketName;
+    }
+
+
+   public static String getUpToken(){
+        if(StringUtils.isBlank(upToken)){
+            upToken = auth.uploadToken(BUCKET_NAME);
+        }
+        return upToken;
+    }
+
+    /**
+    * @Description:  获得token
+    * @Param: [access_key, secret_key]
+    * @return:
+    * @Author: dong.chao
+    * @Date: 2019/4/2
+    */
+    public QiniuUtils(@Value("${qiniu.access_key}") String access_key,@Value("${qiniu.secret_key}") String secret_key) {
+       if(auth == null){
+           auth = Auth.create(access_key, secret_key);
        }
-       return upToken;
     }
 
     /** 普通上传[根据文件路径]
@@ -68,38 +91,32 @@ public class QiniuUtils {
      * @param filename 上传到七牛后保存的文件名
      * @return [String] 返回文件url
      */
+
     public static String upload(String file, String filename){
         String url = null;
         try {
             //调用put方法上传
             Response res = uploadManager.put(file, filename, getUpToken());
 
-            MyPutRet myPutRet=res.jsonToObject(MyPutRet.class);
+            DefaultPutRet defaultPutRet=res.jsonToObject(DefaultPutRet.class);
 
             //此时Key为文件名
-             url = DOMAIN + "//" + myPutRet.getKey();
-        } catch (QiniuException e) {
-            LOGGER.info("upload error:{}",e.getMessage());
-            Response r = e.response;
-            // 请求失败时打印的异常的信息
-            System.out.println(r.toString());
-            try {
-                //响应的文本信息
-                System.out.println(r.bodyString());
-            } catch (QiniuException e1) {
-                //ignore
-            }
+            url = DOMAIN + "//" + defaultPutRet.key;
+        } catch (Exception e) {
+            logger.info("qiniu upload error:{}",e.getMessage());
         }
         return url;
     }
+
 
     /**
      *springmvc MultipartFile 上传文件流
      * @param file 上传文件流
      * @param filename 文件名
-     * @return
+     * @return [String] 返回文件路径
      * @throws Exception
      */
+
 
     public static String updateFile(MultipartFile file, String filename) throws Exception {
         //默认不指定key的情况下，以文件内容的hash值作为文件名
@@ -118,7 +135,8 @@ public class QiniuUtils {
                 //解析上传成功的结果
                 DefaultPutRet putRet;
                 putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-                return putRet.key;
+                String url = DOMAIN + "//" + putRet.key;
+                return url;
 
             } catch (QiniuException ex) {
                 Response r = ex.response;
@@ -134,8 +152,8 @@ public class QiniuUtils {
     }
 
 
+
     public static void main(String[] args) {
-        upload("F:\\749b33c4a9e1448d05fedea550be5bea.jpg","text.jpg");
 
     }
 

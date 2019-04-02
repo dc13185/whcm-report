@@ -1,6 +1,10 @@
 package com.whcm.report.controller;
 
 import java.util.List;
+import java.util.UUID;
+
+import com.ruoyi.common.utils.file.qiniu.QiniuUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +22,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 轮播图 信息操作处理
@@ -84,9 +89,25 @@ public class BannerController extends BaseController
 	@Log(title = "轮播图", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(Banner banner)
-	{		
-		return toAjax(bannerService.insertBanner(banner));
+	public AjaxResult addSave(MultipartFile file, Banner banner)
+	{
+		try {
+			// 上传文件名
+			String fileName = file.getOriginalFilename();
+			int suffixIndex = fileName.lastIndexOf(".");
+			String suffix = fileName.substring(suffixIndex);
+			// 随机取文件名
+			String name = "banner/"+UUID.randomUUID().toString()+suffix;
+			//上传至七牛云
+			String bannerUrl = QiniuUtils.updateFile(file,name);
+			//存入数据库
+			banner.setBannerUrl(bannerUrl);
+			return toAjax(bannerService.insertBanner(banner));
+		}catch (Exception e){
+			logger.info("save banner error:{}",e.getMessage());
+		}
+
+		return  null;
 	}
 
 	/**

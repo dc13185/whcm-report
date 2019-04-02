@@ -2,6 +2,9 @@ package com.ruoyi.common.utils;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.ruoyi.common.core.text.StrFormatter;
 
 /**
@@ -362,4 +365,23 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
         }
         return result.toString();
     }
-}
+    
+    /** 
+    * @Description: 使用正则提取字符串
+    * @Param: [regex, source] 
+    * @return: java.lang.String 
+    * @Author: dong.chao
+    * @Date: 2019/4/1 
+    */ 
+    public static String getMatcher(String regex, String source) {
+        String result = "";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(source);
+        while (matcher.find()) {
+            result = matcher.group(1);
+        }
+        return result;
+    }
+
+
+    }

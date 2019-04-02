@@ -2,18 +2,20 @@
 <html  lang="zh" xmlns:th="http://www.thymeleaf.org">
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
+<link th:href="@{/css/plugins/webuploader.css}" rel="stylesheet"/>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-banner-add">
 			<div class="form-group">	
-				<label class="col-sm-3 control-label">新增banner图：</label>
+				<label class="col-sm-3 control-label">上传轮播图：</label>
 				<div class="col-sm-8">
-					<input id="bannerUrl" name="bannerUrl" class="form-control" type="text">
+					<input id="file" name="bannerUrl" class="form-control" type="file">
 				</div>
 			</div>
 		</form>
 	</div>
     <div th:include="include::footer"></div>
+	<script th:src="@{/js/plugins/webuploader/webuploader.min.js}"></script>
     <script type="text/javascript">
 		var prefix = ctx + "report/banner"
 		$("#form-banner-add").validate({
@@ -27,9 +29,34 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	            $.operate.save(prefix + "/add", $('#form-banner-add').serialize());
+	           // $.operate.save(prefix + "/add", $('#form-banner-add').serialize());
+				uploadFile();
 	        }
 	    }
+
+
+		function uploadFile() {
+			var formData = new FormData();
+			debugger;
+			if($('#file')[0].files[0] == null) {
+				$.modal.alertWarning("请先选择图片文件");
+				return false;
+			}
+			//formData.append('fileName', $("#fileName").val());
+			formData.append('file', $('#file')[0].files[0]);
+			$.ajax({
+				url: prefix + "/add",
+				type: 'post',
+				cache: false,
+				data: formData,
+				processData: false,
+				contentType: false,
+				dataType: "json",
+				success: function(result) {
+					$.operate.successCallback(result);
+				}
+			});
+		}
 	</script>
 </body>
 </html>
