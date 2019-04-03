@@ -37,7 +37,6 @@
 
 		function uploadFile() {
 			var formData = new FormData();
-			debugger;
 			if($('#file')[0].files[0] == null) {
 				$.modal.alertWarning("请先选择图片文件");
 				return false;

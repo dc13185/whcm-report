@@ -12,15 +12,15 @@
 				</div>
 			</div>
 			<div class="form-group">	
-				<label class="col-sm-3 control-label">节目图片URL：</label>
+				<label class="col-sm-3 control-label">节目图片/视频：</label>
 				<div class="col-sm-8">
-					<input id="programPictureurl" name="programPictureurl" class="form-control" type="text">
+					<input id="pictureUrl" name="bannerUrl" class="form-control" type="file">
 				</div>
 			</div>
 			<div class="form-group">	
 				<label class="col-sm-3 control-label">选择学院：</label>
 				<div class="col-sm-8">
-					<select name="status" >
+					<select name="status" id="type">
 						<tr  th:each="type : ${types}">
 							<option th:value="${type.typeId}" th:text="${type.typeName}">${user.typeName}</option>
 						</tr>
@@ -49,9 +49,35 @@
 		
 		function submitHandler() {
 	        if ($.validate.form()) {
-	            $.operate.save(prefix + "/add", $('#form-program-add').serialize());
+				uploadFile();
 	        }
 	    }
+
+		function uploadFile() {
+			var formData = new FormData();
+			debugger;
+			if($('#pictureUrl')[0].files[0] == null) {
+				$.modal.alertWarning("请先选择图片文件");
+				return false;
+			}
+			//formData.append('fileName', $("#fileName").val());
+			formData.append('file', $('#pictureUrl')[0].files[0]);
+			formData.append('programName', $("#programName").val());
+			formData.append('typeId', $("#type").val());
+			formData.append('programContent', $("#programContent").val());
+			$.ajax({
+				url: prefix + "/add",
+				type: 'post',
+				cache: false,
+				data: formData,
+				processData: false,
+				contentType: false,
+				dataType: "json",
+				success: function(result) {
+					$.operate.successCallback(result);
+				}
+			});
+		}
 	</script>
 </body>
 </html>

@@ -2,6 +2,8 @@ package com.whcm.report.controller;
 
 import java.util.List;
 
+import com.ruoyi.common.utils.file.FileUploadUtils;
+import com.whcm.report.domain.Banner;
 import com.whcm.report.domain.Type;
 import com.whcm.report.service.ITypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -21,6 +23,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 节目 信息操作处理
@@ -92,9 +95,18 @@ public class ProgramController extends BaseController
 	@Log(title = "节目", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(Program program)
-	{		
-		return toAjax(programService.insertProgram(program));
+	public AjaxResult addSave(MultipartFile file, Program program)
+	{
+		try {
+			String fileUrl = FileUploadUtils.uploadBusinessFile(file);
+			program.setProgramPictureurl(fileUrl);
+			return toAjax(programService.insertProgram(program));
+		}catch (Exception e){
+			logger.info("add ProgramController error:{}",e.getMessage());
+		}
+
+		return toAjax(0);
+
 	}
 
 	/**

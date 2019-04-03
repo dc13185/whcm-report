@@ -94,14 +94,14 @@ public class BannerController extends BaseController
 	public AjaxResult addSave(MultipartFile file, Banner banner)
 	{
 		try {
-			String fileName = FileUploadUtils.uploadBusinessFile(file);
-			banner.setBannerUrl(fileName);
+			String fileUrl = FileUploadUtils.uploadBusinessFile(file);
+			banner.setBannerUrl(fileUrl);
 			return toAjax(bannerService.insertBanner(banner));
 		}catch (Exception e){
 			logger.info("save banner error:{}",e.getMessage());
 		}
 
-		return  null;
+		return  toAjax(0);
 	}
 
 	/**
