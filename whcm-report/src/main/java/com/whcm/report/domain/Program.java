@@ -32,13 +32,4 @@ public class Program extends BaseEntity
 	private String typeName;
 
 
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("programId", getProgramId())
-            .append("programName", getProgramName())
-            .append("programPictureurl", getProgramPictureurl())
-            .append("typeId", getTypeId())
-            .append("programContent", getProgramContent())
-            .toString();
-    }
 }

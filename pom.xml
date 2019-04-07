@@ -182,8 +182,30 @@
 				<scope>provided</scope>
 			</dependency>
 
-            
-            <!-- 定时任务-->
+			<!--httpclient-->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.8</version>
+			</dependency>
+
+			<!--fastjson-->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>1.2.56</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk15</artifactId>
+				<version>1.46</version>
+			</dependency>
+
+
+
+
+			<!-- 定时任务-->
 			<dependency>
 				<groupId>com.ruoyi</groupId>
 				<artifactId>ruoyi-quartz</artifactId>

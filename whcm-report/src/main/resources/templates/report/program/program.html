@@ -72,7 +72,18 @@
 				{
 					field : 'programPictureurl', 
 					title : '节目图片URL',
-					sortable: true
+					sortable: true,
+					formatter: function(value, row, index) {
+						var flag = value.toLowerCase();
+						if(checkImg(flag)){
+							return '<img style="width:300px;height:200px;"  src=http://'+value+'>';
+						}
+						if(checkVideo(flag)){
+							return '<video src=http://'+value+'  style="width:300px !important ;height:200px !important;" controls="controls">\n' +
+									'</video>';
+						}
+
+					}
 				},
 				{
 					field : 'typeName',
@@ -97,6 +108,26 @@
             };
             $.table.init(options);
         });
+
+		function checkImg(str){
+			var index= str.lastIndexOf(".");
+			str = str.substring(index); 
+			if(str!=".bmp"&&str!=".png"&&str!=".gif"&&str!=".jpg"&&str!=".jpeg"){  
+				return false;
+			}else{
+				return true;
+			}
+		}
+
+		function checkVideo(str) {
+			var index = str.lastIndexOf(".");
+			str = str.substring(index);
+			if (str != ".mp4" && str != ".rmvb" && str != ".avi" && str != ".ts") {
+				return false;
+			} else {
+				return true;
+			}
+		}
     </script>
 </body>
 </html>

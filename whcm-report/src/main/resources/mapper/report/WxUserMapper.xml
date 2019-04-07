@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.WxUserMapper">
+    
+    <resultMap type="WxUser" id="WxUserResult">
+        <result property="wxUserId"    column="wx_user_id"    />
+        <result property="wxUserOpenid"    column="wx_user_openid"    />
+        <result property="wxUserNickname"    column="wx_user_nickname"    />
+        <result property="wxUserAvatarurl"    column="wx_user_avatarurl"    />
+        <result property="wxUserGender"    column="wx_user_gender"    />
+        <result property="wxUserCountry"    column="wx_user_country"    />
+        <result property="wxUserProvince"    column="wx_user_province"    />
+        <result property="wxUserCity"    column="wx_user_city"    />
+        <result property="wxUserLanguage"    column="wx_user_language"    />
+        <result property="wxUserCtime"    column="wx_user_ctime"    />
+        <result property="mobile"    column="mobile"    />
+    </resultMap>
+	
+	<sql id="selectWxUserVo">
+        select wx_user_id, wx_user_openid, wx_user_nickname, wx_user_avatarurl, wx_user_gender, wx_user_country, wx_user_province, wx_user_city, wx_user_language, wx_user_ctime, mobile from report_wx_user
+    </sql>
+	
+    <select id="selectWxUserList" parameterType="WxUser" resultMap="WxUserResult">
+        <include refid="selectWxUserVo"/>
+        <where>  
+            <if test="wxUserId != null "> and wx_user_id = #{wxUserId}</if>
+             <if test="wxUserOpenid != null  and wxUserOpenid != '' "> and wx_user_openid = #{wxUserOpenid}</if>
+             <if test="wxUserNickname != null  and wxUserNickname != '' "> and wx_user_nickname = #{wxUserNickname}</if>
+             <if test="wxUserAvatarurl != null  and wxUserAvatarurl != '' "> and wx_user_avatarurl = #{wxUserAvatarurl}</if>
+             <if test="wxUserGender != null "> and wx_user_gender = #{wxUserGender}</if>
+             <if test="wxUserCountry != null  and wxUserCountry != '' "> and wx_user_country = #{wxUserCountry}</if>
+             <if test="wxUserProvince != null  and wxUserProvince != '' "> and wx_user_province = #{wxUserProvince}</if>
+             <if test="wxUserCity != null  and wxUserCity != '' "> and wx_user_city = #{wxUserCity}</if>
+             <if test="wxUserLanguage != null  and wxUserLanguage != '' "> and wx_user_language = #{wxUserLanguage}</if>
+             <if test="wxUserCtime != null "> and wx_user_ctime = #{wxUserCtime}</if>
+             <if test="mobile != null  and mobile != '' "> and mobile = #{mobile}</if>
+         </where>
+    </select>
+    
+    <select id="selectWxUserById" parameterType="Integer" resultMap="WxUserResult">
+        <include refid="selectWxUserVo"/>
+        where wx_user_id = #{wxUserId}
+    </select>
+        
+    <insert id="insertWxUser" parameterType="WxUser" useGeneratedKeys="true" keyProperty="wxUserId">
+        insert into report_wx_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="wxUserOpenid != null  and wxUserOpenid != ''  ">wx_user_openid,</if>
+			<if test="wxUserNickname != null  and wxUserNickname != ''  ">wx_user_nickname,</if>
+			<if test="wxUserAvatarurl != null  and wxUserAvatarurl != ''  ">wx_user_avatarurl,</if>
+			<if test="wxUserGender != null  ">wx_user_gender,</if>
+			<if test="wxUserCountry != null  and wxUserCountry != ''  ">wx_user_country,</if>
+			<if test="wxUserProvince != null  and wxUserProvince != ''  ">wx_user_province,</if>
+			<if test="wxUserCity != null  and wxUserCity != ''  ">wx_user_city,</if>
+			<if test="wxUserLanguage != null  and wxUserLanguage != ''  ">wx_user_language,</if>
+			<if test="wxUserCtime != null  ">wx_user_ctime,</if>
+			<if test="mobile != null  and mobile != ''  ">mobile,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="wxUserOpenid != null  and wxUserOpenid != ''  ">#{wxUserOpenid},</if>
+			<if test="wxUserNickname != null  and wxUserNickname != ''  ">#{wxUserNickname},</if>
+			<if test="wxUserAvatarurl != null  and wxUserAvatarurl != ''  ">#{wxUserAvatarurl},</if>
+			<if test="wxUserGender != null  ">#{wxUserGender},</if>
+			<if test="wxUserCountry != null  and wxUserCountry != ''  ">#{wxUserCountry},</if>
+			<if test="wxUserProvince != null  and wxUserProvince != ''  ">#{wxUserProvince},</if>
+			<if test="wxUserCity != null  and wxUserCity != ''  ">#{wxUserCity},</if>
+			<if test="wxUserLanguage != null  and wxUserLanguage != ''  ">#{wxUserLanguage},</if>
+			<if test="wxUserCtime != null  ">#{wxUserCtime},</if>
+			<if test="mobile != null  and mobile != ''  ">#{mobile},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateWxUser" parameterType="WxUser">
+        update report_wx_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxUserOpenid != null  and wxUserOpenid != ''  ">wx_user_openid = #{wxUserOpenid},</if>
+            <if test="wxUserNickname != null  and wxUserNickname != ''  ">wx_user_nickname = #{wxUserNickname},</if>
+            <if test="wxUserAvatarurl != null  and wxUserAvatarurl != ''  ">wx_user_avatarurl = #{wxUserAvatarurl},</if>
+            <if test="wxUserGender != null  ">wx_user_gender = #{wxUserGender},</if>
+            <if test="wxUserCountry != null  and wxUserCountry != ''  ">wx_user_country = #{wxUserCountry},</if>
+            <if test="wxUserProvince != null  and wxUserProvince != ''  ">wx_user_province = #{wxUserProvince},</if>
+            <if test="wxUserCity != null  and wxUserCity != ''  ">wx_user_city = #{wxUserCity},</if>
+            <if test="wxUserLanguage != null  and wxUserLanguage != ''  ">wx_user_language = #{wxUserLanguage},</if>
+            <if test="wxUserCtime != null  ">wx_user_ctime = #{wxUserCtime},</if>
+            <if test="mobile != null  and mobile != ''  ">mobile = #{mobile},</if>
+        </trim>
+        where wx_user_id = #{wxUserId}
+    </update>
+
+	<delete id="deleteWxUserById" parameterType="Integer">
+        delete from report_wx_user where wx_user_id = #{wxUserId}
+    </delete>
+	
+    <delete id="deleteWxUserByIds" parameterType="String">
+        delete from report_wx_user where wx_user_id in 
+        <foreach item="wxUserId" collection="array" open="(" separator="," close=")">
+            #{wxUserId}
+        </foreach>
+    </delete>
+    
+</mapper>

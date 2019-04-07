@@ -3,7 +3,7 @@ package com.ruoyi.common.utils.file;
 import java.io.File;
 import java.io.IOException;
 
-import com.ruoyi.common.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,10 +70,13 @@ public class FileUploadUtils
     private static String getBaseUrl(){
         if(StringUtils.isEmpty(baseUrl)){
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            //String scheme = request.getScheme();//http
-            String serverName = request.getServerName();//localhost
-            int serverPort = request.getServerPort();//8080
-            String contextPath = request.getContextPath();//项目名
+            //http
+            String serverName = request.getServerName();
+            //localhost
+            int serverPort = request.getServerPort();
+            //8080
+            String contextPath = request.getContextPath();
+            //项目名
             String url = serverName+":"+serverPort+contextPath;
             baseUrl = url;
         }
@@ -110,7 +113,8 @@ public class FileUploadUtils
     public static String uploadBusinessFile( MultipartFile file) throws IOException{
         try
         {
-            String fileUrl =  getBaseUrl()+"/profile/business/"+upload(Global.getBusinessFile(), file, FileUploadUtils.IMAGE_JPG_EXTENSION);
+            String suffix = StringUtils.substringAfterLast(file.getOriginalFilename(),".");
+            String fileUrl =  getBaseUrl()+"/profile/business/"+upload(Global.getBusinessFile(), file, suffix);
 
             return fileUrl;
         }
