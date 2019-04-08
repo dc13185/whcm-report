@@ -39,5 +39,27 @@
 ####  根据院系获取到节目
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
-| /wx/exhibition/getPrograms | typeId：院系id| result |
+| /wx/exhibition/getPrograms | typeId：院系id<br>status:获取状态 1:获取点赞书 0：获取评论数| programs：节目信息<br>fabulous:点赞数或投票数 |
 
+### 获取评论接口
+| 地址  | 请求参数 | 响应参数 |
+|:------: | :------: | :------: |
+| /wx/exhibition/getComments | programId：节目id  | comments:评论信息 |
+
+
+### 评论接口
+| 地址  | 请求参数 | 响应参数 |
+|:------: | :------: | :------: |
+| /wx/comment/sendComment | programId：节目id<br>xwUserOpenid:openId  | status:1 代表评论成功 0 评论不成功<br>msg:返回信息 |
+
+
+### 点赞接口
+| 地址  | 请求参数 | 响应参数 |
+|:------: | :------: | :------: |
+| /wx/comment/like | programId：节目id<br>xwUserOpenid:openId  | status:1  <br> msg:返回信息 |
+
+
+### 投票接口
+| 地址  | 请求参数 | 响应参数 |
+|:------: | :------: | :------: |
+| /wx/comment/vote | programId：节目id<br>xwUserOpenid:openId  | status:1 代表评论成功 0 评论不成功 <br> msg:返回信息 |

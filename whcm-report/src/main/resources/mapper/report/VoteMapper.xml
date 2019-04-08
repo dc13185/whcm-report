@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.VoteMapper">
+    
+    <resultMap type="Vote" id="VoteResult">
+        <result property="voteId"    column="vote_id"    />
+        <result property="programId"    column="program_id"    />
+        <result property="xwUserOpenid"    column="wx_user_id"    />
+    </resultMap>
+	
+	<sql id="selectVoteVo">
+        select vote_id, program_id, wx_user_id from report_vote
+    </sql>
+	
+    <select id="selectVoteList" parameterType="Vote" resultMap="VoteResult">
+        <include refid="selectVoteVo"/>
+        <where>  
+            <if test="voteId != null "> and vote_id = #{voteId}</if>
+             <if test="programId != null "> and program_id = #{programId}</if>
+             <if test="wxUserId != null  and wxUserId != '' "> and wx_user_id = #{wxUserId}</if>
+         </where>
+    </select>
+    
+    <select id="selectVoteById" parameterType="Vote" resultMap="VoteResult">
+        <include refid="selectVoteVo"/>
+        where wx_user_id = #{xwUserOpenid} and program_id = #{programId}
+    </select>
+
+    <select id="selectVotesByOpenId" parameterType="Vote" resultType="Integer" >
+        select COUNT(1) from report_vote where wx_user_id = #{openId}
+    </select>
+
+    <select id="selectVotesByProId" parameterType="Vote" resultType="Integer" >
+        select COUNT(1) from report_vote where program_id = #{programId}
+    </select>
+        
+    <insert id="insertVote" parameterType="Vote" useGeneratedKeys="true" keyProperty="voteId">
+        insert into report_vote
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="programId != null  ">program_id,</if>
+			<if test="xwUserOpenid != null  and xwUserOpenid != ''  ">wx_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="programId != null  ">#{programId},</if>
+			<if test="xwUserOpenid != null  and xwUserOpenid != ''  ">#{xwUserOpenid},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateVote" parameterType="Vote">
+        update report_vote
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="programId != null  ">program_id = #{programId},</if>
+            <if test="wxUserId != null  and wxUserId != ''  ">wx_user_id = #{wxUserId},</if>
+        </trim>
+        where vote_id = #{voteId}
+    </update>
+
+	<delete id="deleteVoteById" parameterType="Integer">
+        delete from report_vote where vote_id = #{voteId}
+    </delete>
+	
+    <delete id="deleteVoteByIds" parameterType="String">
+        delete from report_vote where vote_id in 
+        <foreach item="voteId" collection="array" open="(" separator="," close=")">
+            #{voteId}
+        </foreach>
+    </delete>
+    
+</mapper>

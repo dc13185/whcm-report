@@ -2,6 +2,7 @@ package com.whcm.report.controller.wx;
 
 import com.whcm.report.domain.*;
 import com.whcm.report.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,9 @@ public class WxExhibitionController {
 
     @Autowired
     private IFabulousService fabulousService;
+
+    @Autowired
+    private IVoteService voteService;
 
 
         
@@ -68,28 +72,48 @@ public class WxExhibitionController {
     }
 
     /**
-     * @Description: 节目接口
-     * @Param: []
-     * @return: java.util.Map
-     * @Author: dong.chao
-     * @Date: 2019/4/7
-     */
+    * @Description: 节目接口
+    * @Param: [program, status:状态 1：查询点赞数量 0：查询投票数量]
+    * @return: java.util.Map
+    * @Author: dong.chao
+    * @Date: 2019/4/8
+    */
     @RequestMapping("/getPrograms")
-    public Map getPrograms(Program program) {
+    public Map getPrograms(Program program,String status) {
         Map result = new HashMap(1);
         List<Program> programs =  programService.selectProgramList(program);
 
-        Comment comment = new Comment();
-        comment.setProgramId(program.getProgramId());
-        List<Comment> comments = commentService.selectCommentList(comment);
-
-        Integer fabulous = fabulousService.selectFabulousByProId(program.getProgramId());
-
+        int fabulous;
+        if(StringUtils.equals("1",status)){
+            fabulous = fabulousService.selectFabulousByProId(program.getProgramId());
+        }else{
+            fabulous = voteService.selectVotesByProId(program.getProgramId());
+        }
         result.put("programs",programs);
-        result.put("comments",comments);
         result.put("fabulous",fabulous);
         return result;
     }
+    
+    /** 
+    * @Description: 获取评论接口
+    * @Param: [programId] 
+    * @return: java.util.Map 
+    * @Author: dong.chao
+    * @Date: 2019/4/8 
+    */ 
+    @RequestMapping("/getComments")
+    public Map getComments(String programId) {
+        Map result = new HashMap(1);
+        Comment comment = new Comment();
+        comment.setProgramId(Integer.parseInt(programId));
+        List<Comment> comments = commentService.selectCommentList(comment);
+        result.put("comments",comments);
+        return  result;
+    }
+
+
+
+
 
 
 

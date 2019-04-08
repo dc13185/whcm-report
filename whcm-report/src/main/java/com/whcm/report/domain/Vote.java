@@ -6,22 +6,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 节目类型表 report_type
+ * 投票表 report_vote
  * 
  * @author dong.chao
- * @date 2019-04-02
+ * @date 2019-04-08
  */
 
 @Data
-public class Type extends BaseEntity
+public class Vote
 {
 	private static final long serialVersionUID = 1L;
 	
-	/** 分类id */
-	private Integer typeId;
-	/**  */
-	private String typeName;
-
+	/** 投票id */
+	private Integer voteId;
+	/** 节目Id */
+	private Integer programId;
+	/** 用户id */
+	private String xwUserOpenid;
 
 
 }
