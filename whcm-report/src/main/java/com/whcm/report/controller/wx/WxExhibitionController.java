@@ -1,11 +1,7 @@
 package com.whcm.report.controller.wx;
 
-import com.whcm.report.domain.Banner;
-import com.whcm.report.domain.Program;
-import com.whcm.report.domain.Type;
-import com.whcm.report.service.IBannerService;
-import com.whcm.report.service.IProgramService;
-import com.whcm.report.service.ITypeService;
+import com.whcm.report.domain.*;
+import com.whcm.report.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +27,12 @@ public class WxExhibitionController {
 
     @Autowired
     private ITypeService typeService;
+
+    @Autowired
+    private ICommentService commentService;
+
+    @Autowired
+    private IFabulousService fabulousService;
 
 
         
@@ -76,7 +78,16 @@ public class WxExhibitionController {
     public Map getPrograms(Program program) {
         Map result = new HashMap(1);
         List<Program> programs =  programService.selectProgramList(program);
-        result.put("result",programs);
+
+        Comment comment = new Comment();
+        comment.setProgramId(program.getProgramId());
+        List<Comment> comments = commentService.selectCommentList(comment);
+
+        Integer fabulous = fabulousService.selectFabulousByProId(program.getProgramId());
+
+        result.put("programs",programs);
+        result.put("comments",comments);
+        result.put("fabulous",fabulous);
         return result;
     }
 

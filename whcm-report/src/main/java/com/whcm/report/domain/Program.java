@@ -13,8 +13,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 
 @Data
-public class Program extends BaseEntity
-{
+public class Program {
 	private static final long serialVersionUID = 1L;
 
 	/** 节目Id

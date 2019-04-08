@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.CommentMapper">
+    
+    <resultMap type="Comment" id="CommentResult">
+        <result property="commentId"    column="comment_id"    />
+        <result property="commentMain"    column="comment_main"    />
+        <result property="xwUserOpenid"    column="xw_user_openid"    />
+        <result property="programId"    column="program_id"    />
+    </resultMap>
+	
+	<sql id="selectCommentVo">
+        select comment_id, comment_main, xw_user_openid, program_id from report_comment
+    </sql>
+	
+    <select id="selectCommentList" parameterType="Comment" resultMap="CommentResult">
+        <include refid="selectCommentVo"/>
+        <where>  
+            <if test="commentId != null "> and comment_id = #{commentId}</if>
+             <if test="commentMain != null  and commentMain != '' "> and comment_main = #{commentMain}</if>
+             <if test="xwUserOpenid != null "> and xw_user_openid = #{xwUserOpenid}</if>
+             <if test="programId != null "> and program_id = #{programId}</if>
+         </where>
+    </select>
+    
+    <select id="selectCommentByOpenIdAndProId" parameterType="Comment" resultMap="CommentResult">
+        <include refid="selectCommentVo"/>
+        where xw_user_openid = #{xwUserOpenid} and program_id = #{programId}
+    </select>
+        
+    <insert id="insertComment" parameterType="Comment" useGeneratedKeys="true" keyProperty="commentId">
+        insert into report_comment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="commentMain != null  and commentMain != ''  ">comment_main,</if>
+			<if test="xwUserOpenid != null  ">xw_user_openid,</if>
+			<if test="programId != null  ">program_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="commentMain != null  and commentMain != ''  ">#{commentMain},</if>
+			<if test="xwUserOpenid != null  ">#{xwUserOpenid},</if>
+			<if test="programId != null  ">#{programId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateComment" parameterType="Comment">
+        update report_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="commentMain != null  and commentMain != ''  ">comment_main = #{commentMain},</if>
+            <if test="xwUserOpenid != null  ">xw_user_openid = #{xwUserOpenid},</if>
+            <if test="programId != null  ">program_id = #{programId},</if>
+        </trim>
+        where comment_id = #{commentId}
+    </update>
+
+	<delete id="deleteCommentById" parameterType="Integer">
+        delete from report_comment where comment_id = #{commentId}
+    </delete>
+	
+    <delete id="deleteCommentByIds" parameterType="String">
+        delete from report_comment where comment_id in 
+        <foreach item="commentId" collection="array" open="(" separator="," close=")">
+            #{commentId}
+        </foreach>
+    </delete>
+    
+</mapper>

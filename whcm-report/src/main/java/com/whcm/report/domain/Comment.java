@@ -6,22 +6,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 轮播图表 report_banner
+ * 节目评论表 report_comment
  * 
  * @author dong.chao
- * @date 2019-03-28
+ * @date 2019-04-07
  */
-
 @Data
-public class Banner
+public class Comment
 {
 	private static final long serialVersionUID = 1L;
 	
-	/**  */
-	private Integer bannerId;
-	/**  */
-	private String bannerUrl;
-
-
+	/** 评论Id */
+	private Integer commentId;
+	/** 评论内容 */
+	private String commentMain;
+	/** 评论用户 */
+	private String xwUserOpenid;
+	/** 节目Id */
+	private Integer programId;
 
 }

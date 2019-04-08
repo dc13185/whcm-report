@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.FabulousMapper">
+    
+    <resultMap type="Fabulous" id="FabulousResult">
+        <result property="fabulousId"    column="fabulous_id"    />
+        <result property="xwUserOpenid"    column="xw_user_openid"    />
+        <result property="programId"    column="program_id"    />
+    </resultMap>
+	
+	<sql id="selectFabulousVo">
+        select fabulous_id, xw_user_openid, program_id from report_fabulous
+    </sql>
+	
+    <select id="selectFabulousList" parameterType="Fabulous" resultMap="FabulousResult">
+        <include refid="selectFabulousVo"/>
+        <where>  
+            <if test="fabulousId != null "> and fabulous_id = #{fabulousId}</if>
+             <if test="xwUserOpenid != null  and xwUserOpenid != '' "> and xw_user_openid = #{xwUserOpenid}</if>
+             <if test="programId != null "> and program_id = #{programId}</if>
+         </where>
+    </select>
+    
+    <select id="selectFabulousByOpIdAndProId" parameterType="Fabulous" resultMap="FabulousResult">
+        <include refid="selectFabulousVo"/>
+        where xw_user_openid = #{xwUserOpenid} and program_id = #{programId}
+    </select>
+
+    <select id="selectFabulousByProId" parameterType="Integer" resultType="Integer" >
+        select 1 from report_fabulous where program_id = #{programId}
+    </select>
+        
+    <insert id="insertFabulous" parameterType="Fabulous" useGeneratedKeys="true" keyProperty="fabulousId">
+        insert into report_fabulous
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="xwUserOpenid != null  and xwUserOpenid != ''  ">xw_user_openid,</if>
+			<if test="programId != null  ">program_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="xwUserOpenid != null  and xwUserOpenid != ''  ">#{xwUserOpenid},</if>
+			<if test="programId != null  ">#{programId},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateFabulous" parameterType="Fabulous">
+        update report_fabulous
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="xwUserOpenid != null  and xwUserOpenid != ''  ">xw_user_openid = #{xwUserOpenid},</if>
+            <if test="programId != null  ">program_id = #{programId},</if>
+        </trim>
+        where fabulous_id = #{fabulousId}
+    </update>
+
+	<delete id="deleteFabulousById" parameterType="Integer">
+        delete from report_fabulous where fabulous_id = #{fabulousId}
+    </delete>
+	
+    <delete id="deleteFabulousByIds" parameterType="String">
+        delete from report_fabulous where fabulous_id in 
+        <foreach item="fabulousId" collection="array" open="(" separator="," close=")">
+            #{fabulousId}
+        </foreach>
+    </delete>
+    
+</mapper>
