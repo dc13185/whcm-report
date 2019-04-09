@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<div>
+			<input id="id" readonly value="1"  >
+			<div id="content" style="width: 800px; height: auto;border: solid;"></div>
+			<input id="text" type="text" placeholder="请输入内容">
+			<button id="send">发送</button>
+		</div>
+	</div>
+    <div th:include="include::footer"></div>
+	<script>
+		var id = $("#id").val();
+		var socket;
+		if (typeof(WebSocket) == "undefined"){
+			console.log("您的浏览器不支持WebSocket")
+		}else {
+			console.log("您的浏览器支持WebSocket")
+			//创建socket对象
+			socket = new WebSocket("ws://localhost:8080/ruoyi_admin_war_exploded/websocket/"+ id);
+			//打开事件
+			socket.onopen = function (event) {
+				console.log("连接成功!!")
+				$("#content").append(id + "上线成功----------");
+			}
+
+			//获得消息,追加到消息框
+			socket.onmessage = function (msg) {
+				console.log("获得消息++++++++"+msg.data)
+				$("#content").append(msg.data);
+			}
+
+			socket.onclose = function (p1) {
+				$("#content").append("下线");
+			}
+
+			//发生了错误事件
+			socket.onerror = function() {
+				alert("Socket发生了错误");
+				//此时可以尝试刷新页面
+			}
+		}
+
+		$(function () {
+			// 发送消息
+			$("#send").click(function () {
+				$.ajax({
+					type: "POST",
+					url: ctx + "wx/webSocket/send/" + id + "/" + $("#text").val(),
+					dateType:text,
+					success: function (data) {
+						alert("发送成功")
+					},
+					error: function (data) {
+						alert("发送失败")
+					}
+				})
+			})
+		})
+	</script>
+</body>
+</html>

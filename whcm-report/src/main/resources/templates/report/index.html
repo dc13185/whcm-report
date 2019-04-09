@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<div>
+			<input id="id" type="text" placeholder="请输入id">
+			<button id="login" >登录</button>
+		</div>
+	</div>
+    <div th:include="include::footer"></div>
+	<script>
+
+		$(function () {
+			$("#login").click(function () {
+				var id = $("#id").val();
+				window.location.href= ctx + "/wx/webSocket/login/"+id;
+			})
+		})
+	</script>
+</body>
+</html>

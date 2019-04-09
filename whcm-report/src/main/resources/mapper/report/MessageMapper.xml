@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.whcm.report.mapper.MessageMapper">
+    
+    <resultMap type="Message" id="MessageResult">
+        <result property="messageId"    column="message_id"    />
+        <result property="wxUserOpenid"    column="wx_user_openid"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="massage"    column="massage"    />
+        <result property="avatarUrl"    column="avatarUrl"    />
+    </resultMap>
+	
+	<sql id="selectMessageVo">
+        select message_id, wx_user_openid, nickname, massage, avatarUrl from report_message
+    </sql>
+	
+    <select id="selectMessageList" parameterType="Message" resultMap="MessageResult">
+        <include refid="selectMessageVo"/>
+        <where>  
+            <if test="messageId != null "> and message_id = #{messageId}</if>
+             <if test="wxUserOpenid != null  and wxUserOpenid != '' "> and wx_user_openid = #{wxUserOpenid}</if>
+             <if test="nickname != null  and nickname != '' "> and nickname = #{nickname}</if>
+             <if test="massage != null  and massage != '' "> and massage = #{massage}</if>
+             <if test="avatarUrl != null  and avatarUrl != '' "> and avatarUrl = #{avatarUrl}</if>
+         </where>
+    </select>
+    
+    <select id="selectMessageById" parameterType="Integer" resultMap="MessageResult">
+        <include refid="selectMessageVo"/>
+        where message_id = #{messageId}
+    </select>
+        
+    <insert id="insertMessage" parameterType="Message" useGeneratedKeys="true" keyProperty="messageId">
+        insert into report_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="wxUserOpenid != null  and wxUserOpenid != ''  ">wx_user_openid,</if>
+			<if test="nickname != null  and nickname != ''  ">nickname,</if>
+			<if test="massage != null  and massage != ''  ">massage,</if>
+			<if test="avatarUrl != null  and avatarUrl != ''  ">avatarUrl,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="wxUserOpenid != null  and wxUserOpenid != ''  ">#{wxUserOpenid},</if>
+			<if test="nickname != null  and nickname != ''  ">#{nickname},</if>
+			<if test="massage != null  and massage != ''  ">#{massage},</if>
+			<if test="avatarUrl != null  and avatarUrl != ''  ">#{avatarUrl},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMessage" parameterType="Message">
+        update report_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxUserOpenid != null  and wxUserOpenid != ''  ">wx_user_openid = #{wxUserOpenid},</if>
+            <if test="nickname != null  and nickname != ''  ">nickname = #{nickname},</if>
+            <if test="massage != null  and massage != ''  ">massage = #{massage},</if>
+            <if test="avatarUrl != null  and avatarUrl != ''  ">avatarUrl = #{avatarUrl},</if>
+        </trim>
+        where message_id = #{messageId}
+    </update>
+
+	<delete id="deleteMessageById" parameterType="Integer">
+        delete from report_message where message_id = #{messageId}
+    </delete>
+	
+    <delete id="deleteMessageByIds" parameterType="String">
+        delete from report_message where message_id in 
+        <foreach item="messageId" collection="array" open="(" separator="," close=")">
+            #{messageId}
+        </foreach>
+    </delete>
+    
+</mapper>
