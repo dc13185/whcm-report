@@ -97,4 +97,10 @@ public class VoteServiceImpl implements IVoteService
 	public Integer selectVotesByProId(Integer programId) {
 		return voteMapper.selectVotesByProId(programId);
 	}
+
+
+	@Override
+	public List<Object> selectAllVotes() {
+		return voteMapper.selectAllVotes();
+	}
 }

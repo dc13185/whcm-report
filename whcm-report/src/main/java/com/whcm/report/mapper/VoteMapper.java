@@ -14,7 +14,7 @@ public interface VoteMapper
 	/**
      * 查询投票信息
      * 
-     * @param voteId 投票ID
+     * @param vote 投票信息
      * @return 投票信息
      */
 	public Vote selectVoteById(Vote vote);
@@ -77,4 +77,14 @@ public interface VoteMapper
 	 * @return 结果
 	 */
 	public Integer selectVotesByProId(Integer programId);
+
+	
+	/** 
+	* @Description: 获取所有节目投票数量
+	* @Param: [] 
+	* @return: java.util.List<java.lang.Object>
+	* @Author: dong.chao
+	* @Date: 2019/4/10 
+	*/ 
+	public List<Object> selectAllVotes();
 }

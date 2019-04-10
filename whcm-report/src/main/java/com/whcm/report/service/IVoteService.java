@@ -69,4 +69,14 @@ public interface IVoteService
 	 */
 	public Integer selectVotesByProId(Integer programId);
 
+
+	/** 
+	* @Description: 获取所有返回票数
+	* @Param: [] 
+	* @return: java.util.List<java.lang.Object> 
+	* @Author: dong.chao
+	* @Date: 2019/4/10 
+	*/ 
+	public List<Object> selectAllVotes();
+
 }

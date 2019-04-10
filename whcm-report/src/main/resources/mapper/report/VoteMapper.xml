@@ -35,6 +35,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectVotesByProId" parameterType="Vote" resultType="Integer" >
         select COUNT(1) from report_vote where program_id = #{programId}
     </select>
+
+    <select id="selectAllVotes" resultType="java.lang.String">
+        SELECT COUNT(vote_id) FROM report_vote GROUP BY  program_id
+    </select>
         
     <insert id="insertVote" parameterType="Vote" useGeneratedKeys="true" keyProperty="voteId">
         insert into report_vote

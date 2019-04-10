@@ -1,16 +1,19 @@
 package com.whcm.report.controller.wx;
 
+import com.alibaba.fastjson.JSONObject;
 import com.whcm.report.domain.Comment;
 import com.whcm.report.domain.Fabulous;
 import com.whcm.report.domain.Vote;
 import com.whcm.report.service.ICommentService;
 import com.whcm.report.service.IFabulousService;
 import com.whcm.report.service.IVoteService;
+import com.whcm.report.websocket.server.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -121,6 +124,8 @@ public class WxCommentController {
                     result.put("msg","投票次数上限");
                 }else{
                     voteService.insertVote(vote);
+                    List<Object> votes = voteService.selectAllVotes();
+                    WebSocketServer.sendInfo(votes.toString());
                     result.put("status",1);
                     result.put("msg","投票成功");
                 }

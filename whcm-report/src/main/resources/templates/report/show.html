@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body >
+<div id="container" style="height: 100%"></div>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/plugins/echarts/echarts.min.js}"></script>
+<script type="text/javascript">
+	var dom = document.getElementById("container");
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	app.title = '票数统计';
+
+	$(function(){
+        opentis();
+    })
+   function ws() {
+        var socket;
+        if (!window.WebSocket) {
+            window.WebSocket = window.MozWebSocket;
+        }
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://192.168.64.131:8080/ws");
+            socket.onmessage = function (event) {
+                debugger;
+                var data =  [19325, 23438, 31000, 121594, 134141, 681807];
+                SetOptions(data);
+            };
+            socket.onopen = function (event) {
+                console.info("连接开启");
+                //var ta = document.getElementById('responseText');
+                //ta.value = "连接开启!";
+            };
+            socket.onclose = function (event) {
+                console.info("连接被关闭");
+                //var ta = document.getElementById('responseText');
+                //ta.value = ta.value + "连接被关闭";
+            };
+        } else {
+            alert("你的浏览器不支持 WebSocket！");
+        };
+
+    }
+
+    function opentis(data){
+        option = {
+            title: {
+                text: '票数统计',
+                subtext: '数据来自后台统计'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            /*	legend: {
+                    data: ['2011年']
+                },*/
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                name:'票数',
+                type: 'value',
+                show:false,
+                boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+                type: 'category',
+                data: ['传媒技术学院','电影电视学院','人文与艺术学院','文化与管理学院']
+            },
+            series: [
+                /*	{
+                        name: '2011年',
+                        type: 'bar',
+                        data: [18203, 23489, 29034, 104970, 131744, 630230]
+                    },*/
+                {
+                    name: '2012年',
+                    type: 'bar',
+                    data: [19325, 23438, 31000, 121594, 134141, 681807]
+                }
+            ]
+        };
+        myChart.setOption(option, true);
+    }
+
+/*	if (option && typeof option === "object") {
+
+	}*/
+</script>
+</body>
+</html>

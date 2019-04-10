@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RequestMapping("/wx/webSocket")
-@RestController
+@Controller
 public class WebSocketController {
 
     @Autowired
@@ -30,9 +30,9 @@ public class WebSocketController {
      * 跳转登录页
      * @return
      */
-    @RequestMapping("/index")
-    public String index(){
-        return "report/index";
+    @RequestMapping("/show")
+    public String show(){
+        return "report/show";
     }
 
     /**
@@ -54,6 +54,7 @@ public class WebSocketController {
      * @return
      */
     @PostMapping(value = "/sendMassage")
+    @ResponseBody
     public String send(String wxOpenId,String avatarUrl,String nickname,String msg){
         synchronized (wxOpenId.intern()){
             try{
