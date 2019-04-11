@@ -6,5 +6,5 @@ package com.whcm.report.domain;
  * @description: 配置
  **/
 public class WhmcConts {
-    public static  final  String AGREEMENT = "http://";
+    public static  final  String AGREEMENT = "https://";
 }

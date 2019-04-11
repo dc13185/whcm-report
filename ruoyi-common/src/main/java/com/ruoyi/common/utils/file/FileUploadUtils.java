@@ -73,11 +73,11 @@ public class FileUploadUtils
             //http
             String serverName = request.getServerName();
             //localhost
-            int serverPort = request.getServerPort();
+            // int serverPort = request.getServerPort();
             //8080
             String contextPath = request.getContextPath();
             //项目名
-            String url = serverName+":"+serverPort+contextPath;
+            String url = serverName+contextPath;
             baseUrl = url;
         }
         return baseUrl;
