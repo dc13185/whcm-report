@@ -63,3 +63,6 @@
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
 | /wx/comment/vote | programId：节目id<br>xwUserOpenid:openId  | status:1 代表评论成功 0 评论不成功 <br> msg:返回信息 |
+
+
+webSocket地址 :websocket/{openId}
