@@ -66,3 +66,8 @@
 
 
 webSocket地址 :websocket/{openId}
+### 留言板留言
+| 地址  | 请求参数 | 响应参数 |
+|:------: | :------: | :------: |
+| /wx/webSocket/sendMassage | wxOpenId：openId<br>avatarUrl:头像<br> nickname:昵称 <br> msg:消息 | 返回success代表成功 |
+
