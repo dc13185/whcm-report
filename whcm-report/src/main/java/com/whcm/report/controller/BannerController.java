@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.ruoyi.common.config.Global;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.common.utils.file.qiniu.QiniuUtils;
+import com.whcm.report.domain.WhmcConts;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class BannerController extends BaseController
 	public AjaxResult addSave(MultipartFile file, Banner banner)
 	{
 		try {
-			String fileUrl = FileUploadUtils.uploadBusinessFile(file);
+			String fileUrl = WhmcConts.AGREEMENT + FileUploadUtils.uploadBusinessFile(file);
 			banner.setBannerUrl(fileUrl);
 			return toAjax(bannerService.insertBanner(banner));
 		}catch (Exception e){

@@ -21,6 +21,9 @@ public class Banner
 	private Integer bannerId;
 	/**  */
 	private String bannerUrl;
+	/** 后缀 */
+	private String suffix;
+
 
 
 

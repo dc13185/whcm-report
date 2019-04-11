@@ -28,6 +28,8 @@ public interface ProgramMapper
      * @return 节目集合
      */
 	public List<Program> selectProgramList(Program program);
+
+	public List<Program> selectProgramListVotes(Program program);
 	
 	/**
      * 新增节目

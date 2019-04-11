@@ -39,7 +39,7 @@
 ####  根据院系获取到节目
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
-| /wx/exhibition/getPrograms | typeId：院系id<br>status:获取状态 1:获取点赞书 0：获取评论数| programs：节目信息<br>fabulous:点赞数或投票数 |
+| /wx/exhibition/getPrograms | typeId：院系id<br>status:获取状态 1:获取点赞书 0：获取评论数| programs：节目信息(节目信息中的 Votes即表示数量 传参status为0时表示投票数 为1时表示点赞) |
 
 ### 获取评论接口
 | 地址  | 请求参数 | 响应参数 |

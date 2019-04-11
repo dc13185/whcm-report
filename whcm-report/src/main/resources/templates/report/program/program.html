@@ -76,10 +76,10 @@
 					formatter: function(value, row, index) {
 						var flag = value.toLowerCase();
 						if(checkImg(flag)){
-							return '<img style="width:300px;height:200px;"  src=http://'+value+'>';
+							return '<img style="width:300px;height:200px;"  src='+value+'>';
 						}
 						if(checkVideo(flag)){
-							return '<video src=http://'+value+'  style="width:300px !important ;height:200px !important;" controls="controls">\n' +
+							return '<video src='+value+'  style="width:300px !important ;height:200px !important;" controls="controls">\n' +
 									'</video>';
 						}
 
@@ -93,6 +93,11 @@
 				{
 					field : 'programContent', 
 					title : '节目内容',
+					sortable: true
+				},
+				{
+					field : 'personnel',
+					title : '参赛人员',
 					sortable: true
 				},
 		        {

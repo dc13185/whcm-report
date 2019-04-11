@@ -27,10 +27,16 @@
 					</select>
 				</div>
 			</div>
-			<div class="form-group">	
+			<div class="form-group">
 				<label class="col-sm-3 control-label">节目内容 ：</label>
 				<div class="col-sm-8">
 					<input id="programContent" name="programContent" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">参赛人员 ：</label>
+				<div class="col-sm-8">
+					<input id="personnel" name="programContent" class="form-control" type="text">
 				</div>
 			</div>
 		</form>
@@ -65,6 +71,7 @@
 			formData.append('programName', $("#programName").val());
 			formData.append('typeId', $("#type").val());
 			formData.append('programContent', $("#programContent").val());
+			formData.append('personnel', $("#personnel").val());
 			$.ajax({
 				url: prefix + "/add",
 				type: 'post',

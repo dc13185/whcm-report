@@ -5,7 +5,9 @@ import java.util.List;
 import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.whcm.report.domain.Banner;
 import com.whcm.report.domain.Type;
+import com.whcm.report.domain.WhmcConts;
 import com.whcm.report.service.ITypeService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -98,7 +100,14 @@ public class ProgramController extends BaseController
 	public AjaxResult addSave(MultipartFile file, Program program)
 	{
 		try {
-			String fileUrl = FileUploadUtils.uploadBusinessFile(file);
+			String fileUrl = WhmcConts.AGREEMENT +  FileUploadUtils.uploadBusinessFile(file);
+			String suffix =  StringUtils.substringAfterLast(fileUrl,".");
+			boolean flge = suffix.equals("jpg") || suffix.equals("png") ||suffix.equals("gif") ||suffix.equals("png") ||suffix.equals("jpeg");
+			if(flge){
+				program.setSuffix("image");
+			}else{
+				program.setSuffix("video");
+			}
 			program.setProgramPictureurl(fileUrl);
 			return toAjax(programService.insertProgram(program));
 		}catch (Exception e){

@@ -79,5 +79,10 @@ public class ProgramServiceImpl implements IProgramService
 	{
 		return programMapper.deleteProgramByIds(Convert.toStrArray(ids));
 	}
-	
+
+
+	@Override
+	public List<Program> selectProgramListVotes(Program program) {
+		return programMapper.selectProgramListVotes(program);
+	}
 }

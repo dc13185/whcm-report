@@ -11,19 +11,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="typeId"    column="type_id"    />
         <result property="programContent"    column="program_content"    />
         <result property="typeName"    column="type_name"    />
+        <result property="personnel"    column="personnel"    />
+        <result property="suffix"    column="suffix"    />
+        <result property="votes"    column="votes"    />
     </resultMap>
 
 	<sql id="selectProgramVo">
-        select program_id, program_name, program_pictureurl, type_id, program_content from report_program
+        select program_id, program_name, program_pictureurl, type_id, program_content,personnel,suffix from report_program
     </sql>
 
     <select id="selectProgramList" parameterType="Program" resultMap="ProgramResult">
-        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content ,t.type_name
+        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,t.type_name,
+        ( SELECT COUNT(f.fabulous_id)  AS votes  FROM report_fabulous f WHERE f.program_id = p.program_id GROUP BY f.program_id ) AS votes
         FROM report_program p LEFT JOIN report_type t ON p.type_id = t.type_id
         <where>
             <if test="programId != null "> and p.program_id = #{programId}</if>
+            <if test="typeId != null  and typeId != '' "> and t.type_id = #{typeId}</if>
              <if test="programName != null  and programName != '' "> and p.program_name = #{programName}</if>
          </where>
+    </select>
+
+    <select id="selectProgramListVotes" parameterType="Program" resultMap="ProgramResult">
+        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,t.type_name,
+        ( SELECT COUNT(v.vote_id)  AS votes  FROM report_vote v WHERE v.program_id = p.program_id GROUP BY v.program_id ) AS votes
+        FROM report_program p LEFT JOIN report_type t ON p.type_id = t.type_id
+        <where>
+            <if test="programId != null "> and p.program_id = #{programId}</if>
+            <if test="typeId != null  and typeId != '' "> and t.type_id = #{typeId}</if>
+            <if test="programName != null  and programName != '' "> and p.program_name = #{programName}</if>
+        </where>
     </select>
 
     <select id="selectProgramById" parameterType="Integer" resultMap="ProgramResult">
@@ -38,12 +54,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="programPictureurl != null  and programPictureurl != ''  ">program_pictureurl,</if>
 			<if test="typeId != null  ">type_id,</if>
 			<if test="programContent != null  and programContent != ''  ">program_content,</if>
+            <if test="personnel != null  and personnel != ''  ">personnel,</if>
+            <if test="suffix != null  and suffix != ''  ">suffix,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="programName != null  and programName != ''  ">#{programName},</if>
 			<if test="programPictureurl != null  and programPictureurl != ''  ">#{programPictureurl},</if>
 			<if test="typeId != null  ">#{typeId},</if>
-			<if test="programContent != null  and programContent != ''  ">#{programContent},</if>
+            <if test="programContent != null  and programContent != ''  ">#{programContent},</if>
+			<if test="personnel != null  and personnel != ''  ">#{personnel},</if>
+            <if test="suffix != null  and suffix != ''  ">#{suffix},</if>
          </trim>
     </insert>
 
@@ -54,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="programPictureurl != null  and programPictureurl != ''  ">program_pictureurl = #{programPictureurl},</if>
             <if test="typeId != null  ">type_id = #{typeId},</if>
             <if test="programContent != null  and programContent != ''  ">program_content = #{programContent},</if>
+            <if test="personnel != null  and personnel != ''  ">personnel = #{personnel},</if>
         </trim>
         where program_id = #{programId}
     </update>

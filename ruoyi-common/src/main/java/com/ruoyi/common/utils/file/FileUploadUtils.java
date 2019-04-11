@@ -114,7 +114,7 @@ public class FileUploadUtils
         try
         {
             String suffix = StringUtils.substringAfterLast(file.getOriginalFilename(),".");
-            String fileUrl =  getBaseUrl()+"/profile/business/"+upload(Global.getBusinessFile(), file, suffix);
+            String fileUrl =  getBaseUrl()+"/profile/business/"+upload(Global.getBusinessFile(), file, "."+suffix);
 
             return fileUrl;
         }

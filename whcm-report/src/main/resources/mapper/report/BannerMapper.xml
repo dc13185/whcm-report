@@ -7,10 +7,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="Banner" id="BannerResult">
         <result property="bannerId"    column="banner_id"    />
         <result property="bannerUrl"    column="banner_url"    />
+        <result property="suffix"    column="suffix"    />
     </resultMap>
 	
 	<sql id="selectBannerVo">
-        select banner_id, banner_url from report_banner
+        select banner_id, banner_url ,suffix from report_banner
     </sql>
 	
     <select id="selectBannerList" parameterType="Banner" resultMap="BannerResult">
@@ -30,9 +31,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into report_banner
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="bannerUrl != null  and bannerUrl != ''  ">banner_url,</if>
+            <if test="suffix != null  and suffix != ''  ">suffix,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="bannerUrl != null  and bannerUrl != ''  ">#{bannerUrl},</if>
+            <if test="suffix != null  and suffix != ''  ">#{suffix},</if>
          </trim>
     </insert>
 	 

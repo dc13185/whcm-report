@@ -3,7 +3,6 @@ package com.whcm.report.controller.wx;
 
 
 import com.alibaba.fastjson.JSON;
-import com.ruoyi.common.utils.aescbc.AesCbcUtil;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.whcm.report.domain.WxUser;
 import com.whcm.report.service.IWxUserService;
@@ -35,7 +34,8 @@ public class WxUserController {
 
 
     @RequestMapping("/login")
-    public Map decodeUserInfo(String encryptedData, String iv, String code) {
+    public Map decodeUserInfo(String userInfo,  String code) {
+        Map user = (Map)JSON.parse(userInfo);
         Map map = new HashMap();
         //登录凭证不能为空
         if (code == null || code.length() == 0) {
@@ -54,59 +54,44 @@ public class WxUserController {
         String sr = HttpUtils.sendGet("https://api.weixin.qq.com/sns/jscode2session", params);
         //解析相应内容（转换成json对象）
         Map json = (Map)JSON.parse(sr);
-        //获取会话密钥（session_key）
-        String session_key = json.get("session_key").toString();
+        /*获取会话密钥（session_key）
+         String session_key = json.get("session_key").toString();*/
         //用户的唯一标识（openid）
         String openid = (String) json.get("openid");
 
         //////////////// 2、对encryptedData加密数据进行AES解密 ////////////////
+             /*   String result = AesCbcUtil.decrypt(encryptedData, session_key, iv, "UTF-8");*/
         try {
-            String result = AesCbcUtil.decrypt(encryptedData, session_key, iv, "UTF-8");
-            if (null != result && result.length() > 0) {
-                map.put("status", 1);
-                map.put("msg", "解密成功");
 
-                Map userInfoJSON = (Map)JSON.parse(result);
-                Map userInfo = new HashMap(8);
+            if(user !=null ){
+                String avatarUrl =  (String)user.get("avatarUrl");
+                String city =  (String)user.get("city");
+                String country =  (String)user.get("country");
+                Integer gender =  (Integer)user.get("gender");
+                String language =  (String)user.get("language");
+                String nickName =  (String)user.get("nickName");
+                String province =  (String)user.get("province");
 
-                String openId =  (String)userInfoJSON.get("openId");
-                String nickName =  (String)userInfoJSON.get("nickName");
-                String gender =  (String)userInfoJSON.get("gender");
-                String city =  (String)userInfoJSON.get("city");
-                String province =  (String)userInfoJSON.get("province");
-                String country =  (String)userInfoJSON.get("country");
-                String avatarUrl = (String)userInfoJSON.get("avatarUrl");
-                String unionId =  (String)userInfoJSON.get("unionId");
-
-                //入库
                 WxUser wxUser = new WxUser();
-                wxUser.setWxUserOpenid(openId);
-                wxUser.setWxUserNickname(nickName);
-                wxUser.setWxUserGender(Integer.parseInt(gender));
-                wxUser.setWxUserCity(city);
-                wxUser.setWxUserProvince(province);
-                wxUser.setWxUserCountry(country);
                 wxUser.setWxUserAvatarurl(avatarUrl);
-                wxUser.setUpdateTime(new Date());
+                wxUser.setWxUserCity(city);
+                wxUser.setWxUserCountry(country);
+                wxUser.setWxUserGender(gender);
+                wxUser.setWxUserLanguage(language);
+                wxUser.setWxUserNickname(nickName);
+                wxUser.setWxUserProvince(province);
+                wxUser.setWxUserOpenid(openid);
+                wxUser.setWxUserCtime(new Date());
                 userService.insertWxUser(wxUser);
 
-                userInfo.put("openId", openId);
-                userInfo.put("nickName",nickName);
-                userInfo.put("gender",gender);
-                userInfo.put("city", city);
-                userInfo.put("province",province);
-                userInfo.put("country", country);
-                userInfo.put("avatarUrl", avatarUrl);
-                userInfo.put("unionId", userInfoJSON.get("unionId"));
-                map.put("userInfo", userInfo);
-
-                return map;
+                map.put("status", 1);
+                map.put("openId", openid);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e){
+            map.put("status", 0);
+            map.put("msg", "异常");
         }
-        map.put("status", 0);
-        map.put("msg", "解密失败");
+
         return map;
     }
 

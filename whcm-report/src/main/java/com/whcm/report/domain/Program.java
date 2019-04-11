@@ -29,6 +29,19 @@ public class Program {
 	private String programContent;
 	/** 所属学院 */
 	private String typeName;
+    /** 人员 */
+	private String personnel;
+	/** 后缀 */
+	private String suffix;
+
+	private int votes;
+
+	private String comment = "'/images/ico/comment.png";
+
+	private boolean comment_switch = false;
+
+	private String fabulous = "/images/ico/Fabulous.png";
+
 
 
 }

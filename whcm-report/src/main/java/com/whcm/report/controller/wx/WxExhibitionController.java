@@ -81,16 +81,14 @@ public class WxExhibitionController {
     @RequestMapping("/getPrograms")
     public Map getPrograms(Program program,String status) {
         Map result = new HashMap(1);
-        List<Program> programs =  programService.selectProgramList(program);
-
-        int fabulous;
-        if(StringUtils.equals("1",status)){
-            fabulous = fabulousService.selectFabulousByProId(program.getProgramId());
+        List<Program> programs;
+        if(StringUtils.equals("0",status)){
+            programs  = programService.selectProgramListVotes(program);
         }else{
-            fabulous = voteService.selectVotesByProId(program.getProgramId());
+            programs =  programService.selectProgramList(program);
         }
+
         result.put("programs",programs);
-        result.put("fabulous",fabulous);
         return result;
     }
     
@@ -98,7 +96,7 @@ public class WxExhibitionController {
     * @Description: 获取评论接口
     * @Param: [programId] 
     * @return: java.util.Map 
-    * @Author: dong.chao
+    * @Author: dong.chao+
     * @Date: 2019/4/8 
     */ 
     @RequestMapping("/getComments")
