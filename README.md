@@ -88,3 +88,12 @@ webSocket地址 :websocket/{openId}
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
 | /wx/exhibition/getFabulousByOpenId | openid: | status:1 代表评论成功 0 评论不成功 <br> comments:返回信息 |
+
+
+
+### 获取留言板内容
+| 地址  | 请求参数 | 响应参数 |
+|:------: | :------: | :------: |
+| /wx/webSocket/getMassage | count:返回条数 为20的倍数 <br> 如写 count:1 返回20条 count2:返回40条 | status:1 代表评论成功 0 评论不成功 <br> messageList:返回信息 |
+
+
