@@ -63,5 +63,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{fabulousId}
         </foreach>
     </delete>
+
+
+    <select id="selectFabulousAndVotes" parameterType="String" resultType="Integer">
+        SELECT SUM(n.numbers) as number FROM (
+              SELECT COUNT(f.fabulous_id) AS numbers  FROM report_fabulous f  WHERE f.xw_user_openid = #{wxUserOpenId}
+            UNION
+            SELECT COUNT(v.vote_id) AS numbers  FROM report_vote v  WHERE v.wx_user_id = #{wxUserOpenId}
+        ) AS n
+    </select>
+
+    <select id="selectFabulous" parameterType="String" resultType="Integer">
+            SELECT COUNT(f.fabulous_id) AS numbers  FROM report_fabulous f  WHERE f.xw_user_openid = #{wxUserOpenId}
+    </select>
+
+    <select id="selectVotes" parameterType="String" resultType="Integer">
+           SELECT COUNT(v.vote_id) AS numbers  FROM report_vote v  WHERE v.wx_user_id = #{wxUserOpenId}
+    </select>
+
+
+    <select id="getFabulousByFabulouId" parameterType="Integer" resultType="Map">
+         SELECT f.* , p.* FROM report_fabulous f
+             LEFT JOIN report_program p ON f.program_id = p.program_id
+         WHERE f.fabulous_id  = #{fabulouId}
+    </select>
+
+
+
+
     
 </mapper>

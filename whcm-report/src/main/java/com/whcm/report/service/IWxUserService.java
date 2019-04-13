@@ -17,7 +17,7 @@ public interface IWxUserService
      * @param wxUserId 小程序用户ID
      * @return 小程序用户信息
      */
-	public WxUser selectWxUserById(Integer wxUserId);
+	public WxUser selectWxUserById(String wxUserOpenid);
 	
 	/**
      * 查询小程序用户列表

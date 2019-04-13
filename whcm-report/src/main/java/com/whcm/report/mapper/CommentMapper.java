@@ -1,7 +1,8 @@
 package com.whcm.report.mapper;
 
 import com.whcm.report.domain.Comment;
-import java.util.List;	
+import java.util.List;
+import java.util.Map;
 
 /**
  * 节目评论 数据层
@@ -58,5 +59,18 @@ public interface CommentMapper
      * @return 结果
      */
 	public int deleteCommentByIds(String[] commentIds);
+
+
+	/**
+	 * 查看评论数量
+	 *
+	 * @param wxUserOpenId openId
+	 * @return 结果
+	 */
+	public int selectComments(String wxUserOpenId);
+
+
+
+	public Map getCommentsByOpenId(Integer commentId);
 	
 }

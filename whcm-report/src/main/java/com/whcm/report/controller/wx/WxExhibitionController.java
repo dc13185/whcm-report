@@ -82,6 +82,7 @@ public class WxExhibitionController {
     public Map getPrograms(Program program,String status) {
         Map result = new HashMap(1);
         List<Program> programs;
+
         if(StringUtils.equals("0",status)){
             programs  = programService.selectProgramListVotes(program);
         }else{
@@ -108,6 +109,79 @@ public class WxExhibitionController {
         result.put("comments",comments);
         return  result;
     }
+
+    /**
+    * @Description: 获取评论数和点赞数
+    * @Param: []
+    * @return: java.util.Map
+    * @Author: dong.chao
+    * @Date: 2019/4/12
+    */
+    @RequestMapping("/toMyMian")
+    public Map toMyMian(String wxUserOpenId){
+        Map result = new HashMap(3);
+        try {
+            int comments =  commentService.selectComments(wxUserOpenId);
+            int fabulous = fabulousService.selectFabulousAndVotes(wxUserOpenId);
+            result.put("status",'1');
+            result.put("comments",comments);
+            result.put("fabulous",fabulous);
+
+        }catch (Exception e){
+            result.put("status",'0');
+            result.put("msg",e.getMessage());
+        }
+
+        return result;
+    }
+
+    
+    /** 
+    * @Description: 根据评论id获取到评论的具体内容
+    * @Param: [wxUserOpenId] 
+    * @return: java.util.Map 
+    * @Author: dong.chao
+    * @Date: 2019/4/12 
+    */ 
+    @RequestMapping("/getCommentsByOpenId")
+    public Map getCommentsByOpenId(Integer commentId){
+        Map result = new HashMap(3);
+        try {
+            Map comments =  commentService.getCommentsByOpenId(commentId);
+            result.put("status","1");
+            result.put("comments",comments);
+        }catch (Exception e){
+            result.put("status","0");
+            result.put("msg",e.getMessage());
+        }
+        return result;
+    }
+
+    /** 
+    * @Description: 根据点赞或投票id获取到具体内容
+    * @Param: [fabulouId] 
+    * @return: java.util.Map 
+    * @Author: dong.chao
+    * @Date: 2019/4/12 
+    */ 
+    @RequestMapping("/getFabulousByFabulouId")
+    public Map getFabulousByFabulouId(Integer fabulouId,String status){
+        Map result = new HashMap(3);
+        try {
+            if(StringUtils.equals(status,"0")){
+
+            }else {
+                Map map = fabulousService.getFabulousByFabulouId(fabulouId);
+            }
+            result.put("status","1");
+        }catch (Exception e){
+            result.put("status","0");
+            result.put("msg",e.getMessage());
+        }
+        return result;
+
+    }
+
 
 
 

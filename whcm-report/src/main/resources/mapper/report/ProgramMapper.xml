@@ -10,19 +10,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="programPictureurl"    column="program_pictureurl"    />
         <result property="typeId"    column="type_id"    />
         <result property="programContent"    column="program_content"    />
+        <result property="coverUrl"    column="cover_url"    />
         <result property="typeName"    column="type_name"    />
         <result property="personnel"    column="personnel"    />
         <result property="suffix"    column="suffix"    />
         <result property="votes"    column="votes"    />
+        <result property="comments"    column="comments"    />
+        <result property="isVote"    column="isVote"    />
     </resultMap>
 
 	<sql id="selectProgramVo">
-        select program_id, program_name, program_pictureurl, type_id, program_content,personnel,suffix from report_program
+        select program_id, program_name, program_pictureurl, type_id, program_content,personnel,suffix,cover_url from report_program
     </sql>
 
     <select id="selectProgramList" parameterType="Program" resultMap="ProgramResult">
         SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,t.type_name,
-        ( SELECT COUNT(f.fabulous_id)  AS votes  FROM report_fabulous f WHERE f.program_id = p.program_id GROUP BY f.program_id ) AS votes
+        ( SELECT COUNT(f.fabulous_id)  AS votes  FROM report_fabulous f WHERE f.program_id = p.program_id GROUP BY f.program_id ) AS votes,
+        ( SELECT COUNT(c.comment_id) FROM report_comment c WHERE c.program_id = p.program_id  GROUP BY c.program_id ) AS comments
+        <if test="wxUserOpenId != null and  wxUserOpenId != '' ">
+            ,(SELECT  COUNT(f1.fabulous_id)  FROM  report_fabulous f1 WHERE f1.program_id = p.program_id  AND f1.xw_user_openid =#{wxUserOpenId} ) AS isVote
+        </if>
         FROM report_program p LEFT JOIN report_type t ON p.type_id = t.type_id
         <where>
             <if test="programId != null "> and p.program_id = #{programId}</if>
@@ -33,7 +40,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectProgramListVotes" parameterType="Program" resultMap="ProgramResult">
         SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,t.type_name,
-        ( SELECT COUNT(v.vote_id)  AS votes  FROM report_vote v WHERE v.program_id = p.program_id GROUP BY v.program_id ) AS votes
+        ( SELECT COUNT(v.vote_id)  AS votes  FROM report_vote v WHERE v.program_id = p.program_id GROUP BY v.program_id ) AS votes,
+        ( SELECT COUNT(c.comment_id) FROM report_comment c WHERE c.program_id = p.program_id  GROUP BY c.program_id ) AS comments
+        <if test="wxUserOpenId != null and  wxUserOpenId != '' ">
+           , (SELECT COUNT(v1.vote_id) AS isvotes FROM  report_vote v1 WHERE v1.program_id = p.program_id  and v1.wx_user_id = #{wxUserOpenId} ) AS isVote
+        </if>
         FROM report_program p LEFT JOIN report_type t ON p.type_id = t.type_id
         <where>
             <if test="programId != null "> and p.program_id = #{programId}</if>
@@ -56,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="programContent != null  and programContent != ''  ">program_content,</if>
             <if test="personnel != null  and personnel != ''  ">personnel,</if>
             <if test="suffix != null  and suffix != ''  ">suffix,</if>
+            <if test="coverUrl != null  and coverUrl != ''  ">cover_url,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="programName != null  and programName != ''  ">#{programName},</if>
@@ -64,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="programContent != null  and programContent != ''  ">#{programContent},</if>
 			<if test="personnel != null  and personnel != ''  ">#{personnel},</if>
             <if test="suffix != null  and suffix != ''  ">#{suffix},</if>
+            <if test="coverUrl != null  and coverUrl != ''  ">#{coverUrl},</if>
          </trim>
     </insert>
 

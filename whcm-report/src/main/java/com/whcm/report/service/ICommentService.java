@@ -2,6 +2,7 @@ package com.whcm.report.service;
 
 import com.whcm.report.domain.Comment;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 节目评论 服务层
@@ -51,4 +52,23 @@ public interface ICommentService
      */
 	public int deleteCommentByIds(String ids);
 	
+	
+	/** 
+	* @Description: 获取到投票数 
+	* @Param: [wxUserOpenId] 
+	* @return: int 
+	* @Author: dong.chao
+	* @Date: 2019/4/12 
+	*/ 
+	public int selectComments(String wxUserOpenId);
+	
+	
+	/** 
+	* @Description: 获取到用户投票的具体信息
+	* @Param: [wxUserOpenId] 
+	* @return: java.util.Map 
+	* @Author: dong.chao
+	* @Date: 2019/4/12 
+	*/ 
+    Map getCommentsByOpenId(Integer commentId);
 }

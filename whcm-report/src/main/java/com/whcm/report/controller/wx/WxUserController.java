@@ -62,8 +62,9 @@ public class WxUserController {
         //////////////// 2、对encryptedData加密数据进行AES解密 ////////////////
              /*   String result = AesCbcUtil.decrypt(encryptedData, session_key, iv, "UTF-8");*/
         try {
-
-            if(user !=null ){
+            WxUser wxUser = userService.selectWxUserById(openid);
+            if(wxUser == null){
+                //为空则入库
                 String avatarUrl =  (String)user.get("avatarUrl");
                 String city =  (String)user.get("city");
                 String country =  (String)user.get("country");
@@ -72,7 +73,7 @@ public class WxUserController {
                 String nickName =  (String)user.get("nickName");
                 String province =  (String)user.get("province");
 
-                WxUser wxUser = new WxUser();
+                wxUser = new WxUser();
                 wxUser.setWxUserAvatarurl(avatarUrl);
                 wxUser.setWxUserCity(city);
                 wxUser.setWxUserCountry(country);
@@ -83,13 +84,14 @@ public class WxUserController {
                 wxUser.setWxUserOpenid(openid);
                 wxUser.setWxUserCtime(new Date());
                 userService.insertWxUser(wxUser);
-
-                map.put("status", 1);
-                map.put("openId", openid);
             }
+            map.put("status", 1);
+            map.put("openId", openid);
+
         }catch (Exception e){
+            e.printStackTrace();
             map.put("status", 0);
-            map.put("msg", "异常");
+            map.put("msg", e.getMessage());
         }
 
         return map;

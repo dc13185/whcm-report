@@ -2,6 +2,7 @@ package com.whcm.report.service;
 
 import com.whcm.report.domain.Fabulous;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 点赞 服务层
@@ -60,4 +61,19 @@ public interface IFabulousService
 	 */
 	public Integer selectFabulousByProId(Integer programId);
 	
+	
+	/** 
+	* @Description: 获取点赞和投票的总数量
+	* @Param: [wxUserOpenId] 
+	* @return: java.lang.Integer 
+	* @Author: dong.chao
+	* @Date: 2019/4/12 
+	*/ 
+	public Integer  selectFabulousAndVotes(String wxUserOpenId);
+
+	public Integer  selectFabulous(String wxUserOpenId);
+
+	public Integer  selectVotes(String wxUserOpenId);
+
+    Map getFabulousByFabulouId(Integer fabulouId);
 }

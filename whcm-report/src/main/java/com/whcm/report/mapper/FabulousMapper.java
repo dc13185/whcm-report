@@ -1,7 +1,8 @@
 package com.whcm.report.mapper;
 
 import com.whcm.report.domain.Fabulous;
-import java.util.List;	
+import java.util.List;
+import java.util.Map;
 
 /**
  * 点赞 数据层
@@ -67,5 +68,22 @@ public interface FabulousMapper
 	 * @return 结果
 	 */
 	public Integer selectFabulousByProId(Integer programId);
-	
+
+
+	/** 
+	* @Description: 获取投票和点赞的总数
+	* @Param: [wxUserOpenId] 
+	* @return: java.lang.Integer 
+	* @Author: dong.chao
+	* @Date: 2019/4/12 
+	*/ 
+	public Integer selectFabulousAndVotes(String wxUserOpenId);
+
+
+	public Integer selectFabulous(String wxUserOpenId);
+
+	public Integer selectVotes(String wxUserOpenId);
+
+
+    Map getFabulousByFabulouId(Integer fabulouId);
 }

@@ -39,9 +39,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </where>
     </select>
     
-    <select id="selectWxUserById" parameterType="Integer" resultMap="WxUserResult">
+    <select id="selectWxUserById" parameterType="String" resultMap="WxUserResult">
         <include refid="selectWxUserVo"/>
-        where wx_user_id = #{wxUserId}
+        where wx_user_openid = #{wxUserOpenid}
     </select>
         
     <insert id="insertWxUser" parameterType="WxUser" useGeneratedKeys="true" keyProperty="wxUserId">

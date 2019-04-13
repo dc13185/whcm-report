@@ -14,10 +14,10 @@ public interface WxUserMapper
 	/**
      * 查询小程序用户信息
      * 
-     * @param wxUserId 小程序用户ID
+     * @param wxUserOpenid 小程序用户ID
      * @return 小程序用户信息
      */
-	public WxUser selectWxUserById(Integer wxUserId);
+	public WxUser selectWxUserById(String wxUserOpenid);
 	
 	/**
      * 查询小程序用户列表
@@ -46,10 +46,10 @@ public interface WxUserMapper
 	/**
      * 删除小程序用户
      * 
-     * @param wxUserId 小程序用户ID
+     * @param wxUserOpenid 小程序用户ID
      * @return 结果
      */
-	public int deleteWxUserById(Integer wxUserId);
+	public int deleteWxUserById(Integer wxUserOpenid);
 	
 	/**
      * 批量删除小程序用户

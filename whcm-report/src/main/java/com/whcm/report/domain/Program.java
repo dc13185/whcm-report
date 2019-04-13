@@ -23,6 +23,10 @@ public class Program {
 	private String programName;
 	/** 节目图片URL */
 	private String programPictureurl;
+
+	/** 封面图片 */
+	private String coverUrl;
+
 	/** 类型Id */
 	private Integer typeId;
 	/** 节目内容*/
@@ -36,7 +40,14 @@ public class Program {
 
 	private int votes;
 
-	private String comment = "'/images/ico/comment.png";
+	private int comments;
+
+	private int isVote;
+
+
+	private String wxUserOpenId;
+
+	private String comment = "/images/ico/comment.png";
 
 	private boolean comment_switch = false;
 

@@ -97,7 +97,7 @@ public class ProgramController extends BaseController
 	@Log(title = "节目", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(MultipartFile file, Program program)
+	public AjaxResult addSave(MultipartFile file,MultipartFile coverUrlFile, Program program)
 	{
 		try {
 			String fileUrl = WhmcConts.AGREEMENT +  FileUploadUtils.uploadBusinessFile(file);
@@ -108,6 +108,12 @@ public class ProgramController extends BaseController
 			}else{
 				program.setSuffix("video");
 			}
+
+			if(coverUrlFile!=null){
+				fileUrl = WhmcConts.AGREEMENT +  FileUploadUtils.uploadBusinessFile(coverUrlFile);
+				program.setCoverUrl(fileUrl);
+			}
+
 			program.setProgramPictureurl(fileUrl);
 			return toAjax(programService.insertProgram(program));
 		}catch (Exception e){

@@ -23,13 +23,13 @@ public class WxUserServiceImpl implements IWxUserService
 	/**
 	 * 查询小程序用户信息
 	 *
-	 * @param wxUserId 小程序用户ID
+	 * @param wxUserOpenid 小程序用户ID
 	 * @return 小程序用户信息
 	 */
 	@Override
-	public WxUser selectWxUserById(Integer wxUserId)
+	public WxUser selectWxUserById(String wxUserOpenid)
 	{
-		return wxUserMapper.selectWxUserById(wxUserId);
+		return wxUserMapper.selectWxUserById(wxUserOpenid);
 	}
 
 	/**
