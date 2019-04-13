@@ -95,7 +95,7 @@ public class WebSocketController {
         try {
             List<Message> messageList = messageService.selectMessageListByPage(pageCount);
             result.put("status","1");
-            result.put("msg",messageList);
+            result.put("messageList",messageList);
         }catch (Exception e){
             e.printStackTrace();
             result.put("status","0");
