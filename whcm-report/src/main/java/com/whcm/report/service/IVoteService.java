@@ -1,6 +1,8 @@
 package com.whcm.report.service;
 
 import com.whcm.report.domain.Vote;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -78,5 +80,9 @@ public interface IVoteService
 	* @Date: 2019/4/10 
 	*/ 
 	public List<Object> selectAllVotes();
+
+
+	List<HashMap> getVotesByOpenId(String openId);
+
 
 }

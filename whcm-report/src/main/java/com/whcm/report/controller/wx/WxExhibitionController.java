@@ -89,6 +89,12 @@ public class WxExhibitionController {
             programs =  programService.selectProgramList(program);
         }
 
+        programs.forEach(program1 -> {
+            if(program1.getIsVote() > 0){
+                program1.setFabulous("/images/ico/select_Fabulous.png");
+            }
+        } );
+
         result.put("programs",programs);
         return result;
     }
@@ -164,15 +170,14 @@ public class WxExhibitionController {
     * @Author: dong.chao
     * @Date: 2019/4/12 
     */ 
-    @RequestMapping("/getFabulousByFabulouId")
-    public Map getFabulousByFabulouId(Integer fabulouId,String status){
+    @RequestMapping("/getFabulousByOpenId")
+    public Map getFabulousByOpenId(String wxUserOpenId){
         Map result = new HashMap(3);
         try {
-            if(StringUtils.equals(status,"0")){
-
-            }else {
-                Map map = fabulousService.getFabulousByFabulouId(fabulouId);
-            }
+            List<HashMap> fabulouMap = fabulousService.getFabulousByOpenId(wxUserOpenId);
+            List<HashMap> votes =   voteService.getVotesByOpenId(wxUserOpenId);
+            result.put("votes",votes);
+            result.put("fabulous",fabulouMap);
             result.put("status","1");
         }catch (Exception e){
             result.put("status","0");

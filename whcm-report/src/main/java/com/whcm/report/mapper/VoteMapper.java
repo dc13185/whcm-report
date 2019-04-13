@@ -1,7 +1,9 @@
 package com.whcm.report.mapper;
 
 import com.whcm.report.domain.Vote;
-import java.util.List;	
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 投票 数据层
@@ -87,4 +89,10 @@ public interface VoteMapper
 	* @Date: 2019/4/10 
 	*/ 
 	public List<Object> selectAllVotes();
+
+
+
+	public List<HashMap>  getVotesByOpenId(String openId);
+
+
 }

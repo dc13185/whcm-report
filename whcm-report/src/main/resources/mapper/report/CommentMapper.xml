@@ -9,6 +9,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="commentMain"    column="comment_main"    />
         <result property="xwUserOpenid"    column="xw_user_openid"    />
         <result property="programId"    column="program_id"    />
+        <result property="commentMain"    column="commentMain"    />
+        <result property="nickname" column="wx_user_nickname" />
+        <result property="avatarurl" column="wx_user_avatarurl" />
+
     </resultMap>
 	
 	<sql id="selectCommentVo">
@@ -16,8 +20,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 	
     <select id="selectCommentList" parameterType="Comment" resultMap="CommentResult">
-        <include refid="selectCommentVo"/>
-        <where>  
+        select comment_id, comment_main, xw_user_openid, program_id ,wx.wx_user_nickname ,wx.wx_user_avatarurl  from report_comment
+            left join  report_wx_user AS wx ON wx.wx_user_openid = report_comment.xw_user_openid
+        <where>
             <if test="commentId != null "> and comment_id = #{commentId}</if>
              <if test="commentMain != null  and commentMain != '' "> and comment_main = #{commentMain}</if>
              <if test="xwUserOpenid != null "> and xw_user_openid = #{xwUserOpenid}</if>

@@ -1,6 +1,8 @@
 package com.whcm.report.service;
 
 import com.whcm.report.domain.Fabulous;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +77,6 @@ public interface IFabulousService
 
 	public Integer  selectVotes(String wxUserOpenId);
 
-    Map getFabulousByFabulouId(Integer fabulouId);
+    List<HashMap> getFabulousByOpenId(String openId);
+
 }

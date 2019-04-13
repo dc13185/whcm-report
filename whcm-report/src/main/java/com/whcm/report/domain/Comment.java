@@ -25,4 +25,8 @@ public class Comment
 	/** 节目Id */
 	private Integer programId;
 
+	private String  nickname;
+
+	private String  avatarurl;
+
 }

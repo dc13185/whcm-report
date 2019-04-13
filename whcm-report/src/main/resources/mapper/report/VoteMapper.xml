@@ -72,10 +72,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <select id="getVotesByFabulouId" parameterType="Integer" resultType="Map">
-         SELECT f.* , p.* FROM report_fabulous f
-             LEFT JOIN report_program p ON f.program_id = p.program_id
-         WHERE f.fabulous_id  = #{fabulouId}
+    <select id="getVotesByOpenId" parameterType="String" resultType="java.util.HashMap">
+         SELECT v.* , p.* FROM report_vote v
+             LEFT JOIN report_program p ON v.program_id = p.program_id
+         WHERE v.wx_user_id  =  #{openId}
     </select>
     
 </mapper>

@@ -9,7 +9,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="xwUserOpenid"    column="xw_user_openid"    />
         <result property="programId"    column="program_id"    />
     </resultMap>
-	
+
+
+
 	<sql id="selectFabulousVo">
         select fabulous_id, xw_user_openid, program_id from report_fabulous
     </sql>
@@ -82,11 +84,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
 
-    <select id="getFabulousByFabulouId" parameterType="Integer" resultType="Map">
-         SELECT f.* , p.* FROM report_fabulous f
+
+    <!-- getFabulousByOpenId -->
+    <select id="getFabulousByOpenId" parameterType="String" resultType="java.util.HashMap">
+             SELECT f.* , p.* FROM report_fabulous f
              LEFT JOIN report_program p ON f.program_id = p.program_id
-         WHERE f.fabulous_id  = #{fabulouId}
+             WHERE f.xw_user_openid = #{openId}
     </select>
+
+
 
 
 

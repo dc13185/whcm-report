@@ -102,6 +102,7 @@ public class ProgramController extends BaseController
 		try {
 			String fileUrl = WhmcConts.AGREEMENT +  FileUploadUtils.uploadBusinessFile(file);
 			String suffix =  StringUtils.substringAfterLast(fileUrl,".");
+			program.setProgramPictureurl(fileUrl);
 			boolean flge = suffix.equals("jpg") || suffix.equals("png") ||suffix.equals("gif") ||suffix.equals("png") ||suffix.equals("jpeg");
 			if(flge){
 				program.setSuffix("image");
@@ -114,7 +115,6 @@ public class ProgramController extends BaseController
 				program.setCoverUrl(fileUrl);
 			}
 
-			program.setProgramPictureurl(fileUrl);
 			return toAjax(programService.insertProgram(program));
 		}catch (Exception e){
 			logger.info("add ProgramController error:{}",e.getMessage());

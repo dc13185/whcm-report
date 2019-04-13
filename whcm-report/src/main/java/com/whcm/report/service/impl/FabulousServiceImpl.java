@@ -1,5 +1,6 @@
 package com.whcm.report.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,8 +103,8 @@ public class FabulousServiceImpl implements IFabulousService
 	}
 
 	@Override
-	public Map getFabulousByFabulouId(Integer fabulouId) {
-		return fabulousMapper.getFabulousByFabulouId(fabulouId);
+	public List<HashMap> getFabulousByOpenId(String openId) {
+		return fabulousMapper.getFabulousByOpenId(openId);
 	}
 
 	@Override

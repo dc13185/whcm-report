@@ -1,5 +1,6 @@
 package com.whcm.report.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,5 +103,11 @@ public class VoteServiceImpl implements IVoteService
 	@Override
 	public List<Object> selectAllVotes() {
 		return voteMapper.selectAllVotes();
+	}
+
+
+	@Override
+	public List<HashMap> getVotesByOpenId(String openId) {
+		return voteMapper.getVotesByOpenId(openId);
 	}
 }
