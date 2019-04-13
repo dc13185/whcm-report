@@ -44,6 +44,10 @@ public class Program {
 
 	private int isVote;
 
+	private int isShow;
+
+	private int isComment;
+
 
 	private String wxUserOpenId;
 

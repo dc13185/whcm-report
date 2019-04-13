@@ -21,7 +21,10 @@ public class Type extends BaseEntity
 	private Integer typeId;
 	/**  */
 	private String typeName;
-
+	/** 是否显示 */
+	private Integer isShow;
+	/** 是否开始 */
+	private Integer isComment;
 
 
 }

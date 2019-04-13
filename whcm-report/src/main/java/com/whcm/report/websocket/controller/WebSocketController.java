@@ -10,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: dong.chao
@@ -19,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RequestMapping("/wx/webSocket")
-@Controller
+@RestController
 public class WebSocketController {
 
     @Autowired
@@ -53,9 +56,9 @@ public class WebSocketController {
      * @param
      * @return
      */
-    @PostMapping(value = "/sendMassage")
-    @ResponseBody
-    public String send(String wxOpenId,String avatarUrl,String nickname,String msg){
+    @RequestMapping(value = "/sendMassage")
+    public Map send( String wxOpenId,  String avatarUrl,  String nickname, String msg){
+        Map result = new HashMap(3);
         synchronized (wxOpenId.intern()){
             try{
                 //入库
@@ -70,11 +73,35 @@ public class WebSocketController {
                 String sendMassage = JSONObject.toJSONString(message);
                 // sid 为null 推送所有人  sid不为null时  推送给指定的 id
                  WebSocketServer.sendInfo(sendMassage);
-                return "success";
+                result.put("status","success");
+
             }catch (Exception e){
                 log.error(e.getMessage());
-                return "report/faile";
+                result.put("error",e.getMessage());
             }
         }
+
+        return  result;
+    }
+
+
+
+
+    @RequestMapping(value = "/getMassage")
+    public Map getMassage(Integer count){
+        Integer size = 20;
+        Integer pageCount = count * size;
+        Map result = new HashMap(3);
+        try {
+            List<Message> messageList = messageService.selectMessageListByPage(pageCount);
+            result.put("status","1");
+            result.put("msg",messageList);
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("status","0");
+            result.put("msg",e.getMessage());
+        }
+
+        return result;
     }
 }

@@ -71,6 +71,6 @@ public interface CommentMapper
 
 
 
-	public Map getCommentsByOpenId(Integer commentId);
+	public Map getCommentsByOpenId(String wxUserOpenId);
 	
 }

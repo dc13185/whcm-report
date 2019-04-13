@@ -70,5 +70,5 @@ public interface ICommentService
 	* @Author: dong.chao
 	* @Date: 2019/4/12 
 	*/ 
-    Map getCommentsByOpenId(Integer commentId);
+    Map getCommentsByOpenId(String wxUserOpenId);
 }

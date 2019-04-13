@@ -77,7 +77,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="getCommentsByOpenId" parameterType="Integer" resultType="Map">
         SELECT c.* , p.* FROM report_comment c
         LEFT JOIN report_program p ON c.program_id = p.program_id
-        WHERE c.comment_id = #{wxUserOpenId}
+        WHERE c.xw_user_openid = #{wxUserOpenId}
     </select>
     
 </mapper>

@@ -9,6 +9,8 @@ import com.whcm.report.service.IFabulousService;
 import com.whcm.report.service.IVoteService;
 import com.whcm.report.websocket.server.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,21 +49,22 @@ public class WxCommentController {
     * @Date: 2019/4/8
     */
     @RequestMapping("/sendComment")
-    public Map sendComment(String programId, String xwUserOpenid,String commentMain){
+    public Map sendComment( String programId, String xwUserOpenid, String commentMain){
         Map result = new HashMap<>(2);
         Comment comment = new Comment();
         comment.setProgramId(Integer.parseInt(programId));
         comment.setXwUserOpenid(xwUserOpenid);
-        Comment falg = commentService.selectCommentByOpenIdAndProId(comment);
-        if(falg != null){
+       /* Comment falg = commentService.selectCommentByOpenIdAndProId(comment);
+       *  if(falg != null){
             result.put("status",0);
             result.put("msg","请勿重复评论");
         }else{
-            comment.setCommentMain(commentMain);
-            commentService.insertComment(comment);
-            result.put("status",1);
-            result.put("msg","评论成功");
-        }
+        *  }
+       * */
+        comment.setCommentMain(commentMain);
+        commentService.insertComment(comment);
+        result.put("status",1);
+
         return result;
     }
 
@@ -73,7 +76,7 @@ public class WxCommentController {
     * @Date: 2019/4/8
     */
     @RequestMapping("/like")
-    public Map like(String xwUserOpenid, String programId){
+    public Map like( String xwUserOpenid, String programId){
         Map result = new HashMap<>(2);
         Fabulous fabulous = new Fabulous();
         fabulous.setXwUserOpenid(xwUserOpenid);
@@ -103,7 +106,7 @@ public class WxCommentController {
      * @Date: 2019/4/8
      */
     @RequestMapping("/vote")
-    public Map vote(String xwUserOpenid, String programId){
+    public Map vote( String xwUserOpenid, String programId){
         Map result = new HashMap<>(2);
         Vote vote = new Vote();
         vote.setXwUserOpenid(xwUserOpenid);

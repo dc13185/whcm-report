@@ -100,7 +100,20 @@ public class TypeController extends BaseController
 		mmap.put("type", type);
 	    return prefix + "/edit";
 	}
-	
+
+
+	/**
+	 * 显示/隐藏
+	 */
+/*	@PostMapping("/editIsShow")
+	public String editIsShow(Type type , ModelMap mmap)
+	{
+		typeService.editIsShow(type);
+		*//** Type type = typeService.selectTypeById(typeId); *//*
+		mmap.put("type", type);
+		return prefix + "/edit";
+	}
+	*/
 	/**
 	 * 修改保存节目类型
 	 */

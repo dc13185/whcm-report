@@ -50,5 +50,7 @@ public interface IMessageService
      * @return 结果
      */
 	public int deleteMessageByIds(String ids);
+
+	List<Message> selectMessageListByPage(Integer pageCount);
 	
 }

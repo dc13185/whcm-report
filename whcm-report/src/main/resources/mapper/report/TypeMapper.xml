@@ -7,10 +7,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="Type" id="TypeResult">
         <result property="typeId"    column="type_id"    />
         <result property="typeName"    column="type_name"    />
+        <result property="isShow"    column="isShow"    />
+        <result property="isComment"    column="isComment"    />
     </resultMap>
 	
 	<sql id="selectTypeVo">
-        select type_id, type_name from report_type
+        select type_id, type_name,isShow,isComment from report_type
     </sql>
 
     <select id="selectTypeAll"  resultMap="TypeResult">
@@ -39,11 +41,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="typeName != null  and typeName != ''  ">#{typeName},</if>
          </trim>
     </insert>
+
+
 	 
     <update id="updateType" parameterType="Type">
         update report_type
         <trim prefix="SET" suffixOverrides=",">
             <if test="typeName != null  and typeName != ''  ">type_name = #{typeName},</if>
+            <if test="isShow != null  ">isShow = #{isShow},</if>
+            <if test="isComment != null ">isComment = #{isComment},</if>
         </trim>
         where type_id = #{typeId}
     </update>
@@ -58,5 +64,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{typeId}
         </foreach>
     </delete>
+
     
 </mapper>

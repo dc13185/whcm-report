@@ -74,15 +74,40 @@
 		            title: '操作',
 		            align: 'center',
 		            formatter: function(value, row, index) {
+		            	debugger;
 		            	var actions = [];
+		            	if(row.isShow == '1'){
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="editIshow(\'' + row.typeId + '\',0)"><i class="fa fa-edit"></i>点击隐藏</a> ');
+						}else{
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="editIshow(\'' + row.typeId + '\',1)"><i class="fa fa-edit"></i>点击显示</a> ');
+						}
+
+						if(row.isComment == '1'){
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="editIsComment(\'' + row.typeId + '\',0)"><i class="fa fa-edit"></i>点击禁止投票</a> ');
+						}else{
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="editIsComment(\'' + row.typeId + '\',1)"><i class="fa fa-edit"></i>点击启动投票</a> ');
+						}
+
+
 		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.typeId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
                         actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.typeId + '\')"><i class="fa fa-remove"></i>删除</a>');
-						return actions.join('');
+
+
+                        return actions.join('');
 		            }
 		        }]
             };
             $.table.init(options);
         });
+
+        function editIshow(typeId,status){
+        	debugger;
+			$.operate.save(prefix + "/edit", {"typeId":typeId,"IsShow":status});
+		}
+
+		function editIsComment(typeId,status){
+			$.operate.save(prefix + "/edit", {"typeId":typeId,"isComment":status});
+		}
     </script>
 </body>
 </html>

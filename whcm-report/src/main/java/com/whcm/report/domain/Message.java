@@ -4,16 +4,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 留言表 report_message
  * 
  * @author dong.chao
  * @date 2019-04-09
  */
-public class Message extends BaseEntity
+public class Message
 {
-	private static final long serialVersionUID = 1L;
-	
 	/**  */
 	private Integer messageId;
 	/**  */
@@ -24,6 +24,8 @@ public class Message extends BaseEntity
 	private String massage;
 	/**  */
 	private String avatarUrl;
+
+	private Date sendTime;
 
 	public void setMessageId(Integer messageId) 
 	{
@@ -71,13 +73,11 @@ public class Message extends BaseEntity
 		return avatarUrl;
 	}
 
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("messageId", getMessageId())
-            .append("wxUserOpenid", getWxUserOpenid())
-            .append("nickname", getNickname())
-            .append("massage", getMassage())
-            .append("avatarUrl", getAvatarUrl())
-            .toString();
-    }
+	public Date getSendTime() {
+		return sendTime;
+	}
+
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
+	}
 }

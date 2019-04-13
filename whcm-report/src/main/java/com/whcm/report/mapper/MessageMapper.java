@@ -58,5 +58,8 @@ public interface MessageMapper
      * @return 结果
      */
 	public int deleteMessageByIds(String[] messageIds);
+
+
+	List<Message> selectMessageListByPage(Integer pageCount);
 	
 }

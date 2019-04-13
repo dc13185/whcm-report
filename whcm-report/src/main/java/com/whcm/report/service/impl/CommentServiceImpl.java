@@ -87,7 +87,7 @@ public class CommentServiceImpl implements ICommentService
 	public int selectComments(String wxUserOpenId) { return commentMapper.selectComments(wxUserOpenId); }
 
 	@Override
-	public Map getCommentsByOpenId(Integer commentId) {
-		return commentMapper.getCommentsByOpenId(commentId);
+	public Map getCommentsByOpenId(String wxUserOpenId) {
+		return commentMapper.getCommentsByOpenId(wxUserOpenId);
 	}
 }

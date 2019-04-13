@@ -17,6 +17,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="votes"    column="votes"    />
         <result property="comments"    column="comments"    />
         <result property="isVote"    column="isVote"    />
+        <result property="isShow"    column="isShow"    />
+        <result property="isComment"    column="isComment"    />
     </resultMap>
 
 	<sql id="selectProgramVo">
@@ -24,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectProgramList" parameterType="Program" resultMap="ProgramResult">
-        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,t.type_name,
+        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,t.type_name,p.cover_url,t.isShow,t.isComment,
         ( SELECT COUNT(f.fabulous_id)  AS votes  FROM report_fabulous f WHERE f.program_id = p.program_id GROUP BY f.program_id ) AS votes,
         ( SELECT COUNT(c.comment_id) FROM report_comment c WHERE c.program_id = p.program_id  GROUP BY c.program_id ) AS comments
         <if test="wxUserOpenId != null and  wxUserOpenId != '' ">
@@ -39,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectProgramListVotes" parameterType="Program" resultMap="ProgramResult">
-        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,t.type_name,
+        SELECT p.program_id, p.program_name, p.program_pictureurl, p.program_content , p.personnel,p.suffix ,p.cover_url,t.type_name,t.isShow,t.isComment,
         ( SELECT COUNT(v.vote_id)  AS votes  FROM report_vote v WHERE v.program_id = p.program_id GROUP BY v.program_id ) AS votes,
         ( SELECT COUNT(c.comment_id) FROM report_comment c WHERE c.program_id = p.program_id  GROUP BY c.program_id ) AS comments
         <if test="wxUserOpenId != null and  wxUserOpenId != '' ">

@@ -16,8 +16,9 @@ import java.util.Map;
  * @description: 查询接口
  **/
 
-@RestController
+
 @RequestMapping("/wx/exhibition")
+@RestController
 public class WxExhibitionController {
 
     @Autowired
@@ -150,10 +151,10 @@ public class WxExhibitionController {
     * @Date: 2019/4/12 
     */ 
     @RequestMapping("/getCommentsByOpenId")
-    public Map getCommentsByOpenId(Integer commentId){
+    public Map getCommentsByOpenId(String wxUserOpenId){
         Map result = new HashMap(3);
         try {
-            Map comments =  commentService.getCommentsByOpenId(commentId);
+            Map comments =  commentService.getCommentsByOpenId(wxUserOpenId);
             result.put("status","1");
             result.put("comments",comments);
         }catch (Exception e){
@@ -184,16 +185,7 @@ public class WxExhibitionController {
             result.put("msg",e.getMessage());
         }
         return result;
-
     }
-
-
-
-
-
-
-
-
 
 
 

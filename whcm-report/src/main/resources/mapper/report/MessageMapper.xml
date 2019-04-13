@@ -26,7 +26,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="avatarUrl != null  and avatarUrl != '' "> and avatarUrl = #{avatarUrl}</if>
          </where>
     </select>
-    
+
+    <select id="selectMessageListByPage" parameterType="Integer" resultMap="MessageResult">
+
+      SELECT message_id, wx_user_openid, nickname, massage, avatarUrl FROM report_message
+        ORDER BY message_id DESC
+        <if test="_parameter != null" >
+            LIMIT 0,#{_parameter,jdbcType=INTEGER}
+        </if>
+
+    </select>
+
+
     <select id="selectMessageById" parameterType="Integer" resultMap="MessageResult">
         <include refid="selectMessageVo"/>
         where message_id = #{messageId}
