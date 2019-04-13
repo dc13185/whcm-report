@@ -78,13 +78,13 @@ webSocket地址 :websocket/{openId}
 | /wx/exhibition/toMyMian | wxUserOpenId：openId | status:1 代表评论成功 0 评论不成功 <br> comments:评论数 fabulous:点赞数和投票数的总和 |
 
 
-### 根据评论id获取到评论的具体内容
+### 根据openId获取到评论的具体内容
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
-| /wx/exhibition/getCommentsByOpenId | commentId:评论id | status:1 代表评论成功 0 评论不成功 <br> comments:返回信息 |
+| /wx/exhibition/getCommentsByOpenId | openid: | status:1 代表评论成功 0 评论不成功 <br> comments:返回信息 |
 
 
-### 根据点赞或投票id获取到具体内容
+### 根据openId获取到点赞的信息
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
-| /wx/exhibition/getFabulousByFabulouId | commentId:评论id | status:1 代表评论成功 0 评论不成功 <br> comments:返回信息 |
+| /wx/exhibition/getFabulousByOpenId | openid: | status:1 代表评论成功 0 评论不成功 <br> comments:返回信息 |
