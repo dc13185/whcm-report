@@ -154,10 +154,11 @@ public class WxExhibitionController {
     public Map getCommentsByOpenId(String wxUserOpenId){
         Map result = new HashMap(3);
         try {
-            Map comments =  commentService.getCommentsByOpenId(wxUserOpenId);
+            List<HashMap> comments =  commentService.getCommentsByOpenId(wxUserOpenId);
             result.put("status","1");
             result.put("comments",comments);
         }catch (Exception e){
+            e.printStackTrace();
             result.put("status","0");
             result.put("msg",e.getMessage());
         }

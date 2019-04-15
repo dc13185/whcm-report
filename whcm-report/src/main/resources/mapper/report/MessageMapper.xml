@@ -28,13 +28,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectMessageListByPage" parameterType="Integer" resultMap="MessageResult">
-
       SELECT message_id, wx_user_openid, nickname, massage, avatarUrl FROM report_message
-        ORDER BY message_id DESC
         <if test="_parameter != null" >
-            LIMIT 0,#{_parameter,jdbcType=INTEGER}
+            ORDER BY message_id DESC LIMIT 0,#{_parameter,jdbcType=INTEGER}
         </if>
-
     </select>
 
 

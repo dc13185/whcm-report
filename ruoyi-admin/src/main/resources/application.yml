@@ -8,7 +8,7 @@ ruoyi:
   copyrightYear: 2019
   # 文件上传
   #profile: D:/profile/  /profile/picture/
-  profile:  D:/profile/
+  profile:  /profile/picture/
   # 获取ip地址开关
   addressEnabled: true
 

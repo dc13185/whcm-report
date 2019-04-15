@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFabulousAndVotes" parameterType="String" resultType="Integer">
         SELECT SUM(n.numbers) as number FROM (
               SELECT COUNT(f.fabulous_id) AS numbers  FROM report_fabulous f  WHERE f.xw_user_openid = #{wxUserOpenId}
-            UNION
+            UNION all
             SELECT COUNT(v.vote_id) AS numbers  FROM report_vote v  WHERE v.wx_user_id = #{wxUserOpenId}
         ) AS n
     </select>

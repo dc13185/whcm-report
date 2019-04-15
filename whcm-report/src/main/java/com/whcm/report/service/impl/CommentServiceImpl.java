@@ -1,5 +1,6 @@
 package com.whcm.report.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public class CommentServiceImpl implements ICommentService
 	public int selectComments(String wxUserOpenId) { return commentMapper.selectComments(wxUserOpenId); }
 
 	@Override
-	public Map getCommentsByOpenId(String wxUserOpenId) {
+	public List<HashMap> getCommentsByOpenId(String wxUserOpenId) {
 		return commentMapper.getCommentsByOpenId(wxUserOpenId);
 	}
 }

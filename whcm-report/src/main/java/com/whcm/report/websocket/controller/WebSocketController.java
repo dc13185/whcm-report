@@ -89,8 +89,11 @@ public class WebSocketController {
 
     @RequestMapping(value = "/getMassage")
     public Map getMassage(Integer count){
-        Integer size = 20;
-        Integer pageCount = count * size;
+        Integer  pageCount = null;
+        if(count!=null){
+            Integer size = 20;
+            pageCount = count * size;
+        }
         Map result = new HashMap(3);
         try {
             List<Message> messageList = messageService.selectMessageListByPage(pageCount);

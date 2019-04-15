@@ -1,6 +1,8 @@
 package com.whcm.report.service;
 
 import com.whcm.report.domain.Comment;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,5 +72,5 @@ public interface ICommentService
 	* @Author: dong.chao
 	* @Date: 2019/4/12 
 	*/ 
-    Map getCommentsByOpenId(String wxUserOpenId);
+    List<HashMap> getCommentsByOpenId(String wxUserOpenId);
 }

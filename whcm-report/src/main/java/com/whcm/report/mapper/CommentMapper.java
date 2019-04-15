@@ -1,6 +1,8 @@
 package com.whcm.report.mapper;
 
 import com.whcm.report.domain.Comment;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +73,6 @@ public interface CommentMapper
 
 
 
-	public Map getCommentsByOpenId(String wxUserOpenId);
+	public List<HashMap> getCommentsByOpenId(String wxUserOpenId);
 	
 }
