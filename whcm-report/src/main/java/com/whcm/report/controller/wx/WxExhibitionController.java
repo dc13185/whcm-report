@@ -39,6 +39,9 @@ public class WxExhibitionController {
     @Autowired
     private IVoteService voteService;
 
+    @Autowired
+    private IFeedbackService feedbackService;
+
 
         
     /** 
@@ -187,6 +190,29 @@ public class WxExhibitionController {
         }
         return result;
     }
+
+
+
+
+    @RequestMapping("/feedback")
+    public Map  feedback(String feedback){
+        Map result = new HashMap(1);
+        if(StringUtils.isNotBlank(feedback)){
+            Feedback fb = new Feedback();
+            fb.setFeedbackMain(feedback);
+            feedbackService.insertFeedback(fb);
+            result.put("status","1");
+        }else{
+            result.put("status","1");
+        }
+
+        return result;
+    }
+
+
+
+
+
 
 
 
