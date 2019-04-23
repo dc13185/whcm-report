@@ -1,5 +1,6 @@
 package com.whcm.report.controller.wx;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.whcm.report.domain.Comment;
 import com.whcm.report.domain.Fabulous;
@@ -127,8 +128,11 @@ public class WxCommentController {
                     result.put("msg","投票次数上限");
                 }else{
                     voteService.insertVote(vote);
+
                     List<Object> votes = voteService.selectAllVotes();
-                    WebSocketServer.sendInfo(votes.toString());
+                    String sendMassage = JSONObject.toJSONString(votes);
+                    WebSocketServer.sendInfo(sendMassage);
+
                     result.put("status",1);
                     result.put("msg","投票成功");
                 }

@@ -1,12 +1,16 @@
 package com.whcm.report.websocket.server;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ruoyi.common.utils.spring.SpringUtils;
+import com.whcm.report.service.IVoteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -17,8 +21,11 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @Slf4j
 @Component
-@ServerEndpoint("/wx/websocket/{wxOpenId}")
+@ServerEndpoint("/wx/websocket/link")
 public class WebSocketServer {
+
+        private IVoteService voteService = SpringUtils.getBean(IVoteService.class);
+
 
         /** 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。*/
         private static int onlineCount = 0;
@@ -29,18 +36,19 @@ public class WebSocketServer {
         private Session session;
 
         /** 接收sid */
-        private String wxOpenId="";
         /**
          * 连接建立成功调用的方法*/
         @OnOpen
-        public void onOpen(Session session, @PathParam("wxOpenId") String wxOpenId) {
+        public void onOpen(Session session) {
             this.session = session;
             //加入set中
             webSocketSet.add(this);
             //在线数加1
-            addOnlineCount();
-            log.info("有新窗口开始监听:"+wxOpenId+",当前在线人数为" + getOnlineCount());
-            this.wxOpenId=wxOpenId;
+            //addOnlineCount();
+            String votes = voteService.selectVoteCount();
+
+            WebSocketServer.onlineCount = Integer.parseInt(votes);
+
             try {
                 sendMessage("连接成功");
             } catch (IOException e) {
@@ -56,7 +64,7 @@ public class WebSocketServer {
             //从set中删除
             webSocketSet.remove(this);
             //在线数减1
-            subOnlineCount();
+             //subOnlineCount();
             log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
          }
 
@@ -66,7 +74,6 @@ public class WebSocketServer {
          * @param message 客户端发送过来的消息*/
         @OnMessage
         public void onMessage(String message, Session session) {
-        log.info("收到来自窗口"+wxOpenId+"的信息:"+message);
         //群发消息
         for (WebSocketServer item : webSocketSet) {
                 try {
@@ -101,7 +108,16 @@ public class WebSocketServer {
         public static void sendInfo(String message)  {
             for (WebSocketServer item : webSocketSet) {
                 try {
-                    item.sendMessage(message);
+
+                    Map<String,Object> map= new HashMap(2);
+                    map.put("votes",message);
+                    map.put("count",++WebSocketServer.onlineCount);
+                    // 定义JackJson 对象
+                    ObjectMapper mapper = new ObjectMapper();
+                    //将map转换成JSON字符串
+                    String image_json = mapper.writeValueAsString(map);
+                    item.sendMessage(image_json);
+
                 } catch (IOException e) {
                     continue;
                 }

@@ -85,4 +85,7 @@ public interface IVoteService
 	List<HashMap> getVotesByOpenId(String openId);
 
 
+	public String selectVoteCount();
+
+
 }

@@ -1,14 +1,10 @@
 package com.whcm.report.websocket.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.whcm.report.domain.Message;
 import com.whcm.report.service.IMessageService;
-import com.whcm.report.websocket.server.WebSocketServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -70,9 +66,9 @@ public class WebSocketController {
 
                 messageService.insertMessage(message);
                 //发送消息
-                String sendMassage = JSONObject.toJSONString(message);
+                //String sendMassage = JSONObject.toJSONString(message);
                 // sid 为null 推送所有人  sid不为null时  推送给指定的 id
-                 WebSocketServer.sendInfo(sendMassage);
+                //WebSocketServer.sendInfo(sendMassage);
                 result.put("status","success");
 
             }catch (Exception e){

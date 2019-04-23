@@ -30,8 +30,8 @@ server:
 # 日志配置
 logging:
   level:
-    com.ruoyi: debug
-    com.whcm: debug
+    com.ruoyi: INFO
+    com.whcm: INFO
     org.springframework: WARN
     org.spring.springboot.dao: debug
 
@@ -76,7 +76,7 @@ mybatis:
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
     mapperLocations: classpath*:mapper/**/*Mapper.xml
     # 加载全局的配置文件
-    configLocation: classpath:mapper/mybatis-config.xml
+    configLocation: classpath:mapper/mybatis-configmybatis-config.xml
 
 # PageHelper分页插件
 pagehelper: 

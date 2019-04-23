@@ -110,4 +110,9 @@ public class VoteServiceImpl implements IVoteService
 	public List<HashMap> getVotesByOpenId(String openId) {
 		return voteMapper.getVotesByOpenId(openId);
 	}
+
+	@Override
+	public String selectVoteCount() {
+		return voteMapper.selectVoteCount();
+	}
 }

@@ -93,6 +93,15 @@ public interface VoteMapper
 
 
 	public List<HashMap>  getVotesByOpenId(String openId);
+	
+	/** 
+	* @Description: 获取所有的投票数
+	* @Param: [] 
+	* @return: java.lang.Integer 
+	* @Author: dong.chao
+	* @Date: 2019/4/21 
+	*/ 
+	public String selectVoteCount();
 
 
 }
