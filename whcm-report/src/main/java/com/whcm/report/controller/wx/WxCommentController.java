@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.whcm.report.domain.Comment;
 import com.whcm.report.domain.Fabulous;
+import com.whcm.report.domain.Type;
 import com.whcm.report.domain.Vote;
 import com.whcm.report.service.ICommentService;
 import com.whcm.report.service.IFabulousService;
+import com.whcm.report.service.ITypeService;
 import com.whcm.report.service.IVoteService;
 import com.whcm.report.websocket.server.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class WxCommentController {
 
     @Autowired
     private IVoteService voteService;
+
+    @Autowired
+    private ITypeService typeService;
 
     /**
     * @Description: 评论接口
@@ -114,29 +119,35 @@ public class WxCommentController {
         vote.setProgramId(Integer.parseInt(programId));
 
         synchronized(xwUserOpenid.intern()){
-            Vote falg = voteService.selectVoteById(vote);
-            if(falg != null){
-                //已经投票过了
-                result.put("status",0);
-                result.put("msg","请勿重复投票");
-            }else{
-                //没有投票过，查询有没有投票三次
-                Integer redCount = voteService.selectVotesByOpenId(xwUserOpenid);
-                if(redCount!=null && redCount >= COUNT){
-                    //投票次数上限
+            Type type = typeService.selectTypeById(8);
+            if(type.getIsComment() == 1){
+                Vote falg = voteService.selectVoteById(vote);
+                if(falg != null){
+                    //已经投票过了
                     result.put("status",0);
-                    result.put("msg","投票次数上限");
+                    result.put("msg","请勿重复投票");
                 }else{
-                    voteService.insertVote(vote);
+                    //没有投票过，查询有没有投票三次
+                    Integer redCount = voteService.selectVotesByOpenId(xwUserOpenid);
+                    if(redCount!=null && redCount >= COUNT){
+                        //投票次数上限
+                        result.put("status",0);
+                        result.put("msg","投票次数上限");
+                    }else{
+                        voteService.insertVote(vote);
+                        List<Object> votes = voteService.selectAllVotes();
+                        String sendMassage = JSONObject.toJSONString(votes);
+                        WebSocketServer.sendInfo(sendMassage);
 
-                    List<Object> votes = voteService.selectAllVotes();
-                    String sendMassage = JSONObject.toJSONString(votes);
-                    WebSocketServer.sendInfo(sendMassage);
-
-                    result.put("status",1);
-                    result.put("msg","投票成功");
+                        result.put("status",1);
+                        result.put("msg","投票成功");
+                    }
                 }
+            }else{
+                result.put("status",0);
+                result.put("msg","投票尚未开始");
             }
+
             return result;
         }
 

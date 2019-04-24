@@ -279,7 +279,7 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/druid/**", "anon");
         filterChainDefinitionMap.put("/captcha/captchaImage**", "anon");
         filterChainDefinitionMap.put("/wx/**", "anon");
-        filterChainDefinitionMap.put("/wx/websocket/**", "anon");
+        //filterChainDefinitionMap.put("/wx/websocket/**", "anon");
         filterChainDefinitionMap.put("/profile/**", "anon");
         // 退出 logout地址，shiro去清除session
         filterChainDefinitionMap.put("/logout", "logout");
