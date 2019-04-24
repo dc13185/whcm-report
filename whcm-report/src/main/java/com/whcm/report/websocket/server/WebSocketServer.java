@@ -48,7 +48,6 @@ public class WebSocketServer {
             String votes = voteService.selectVoteCount();
 
             WebSocketServer.onlineCount = Integer.parseInt(votes);
-
             try {
                 sendMessage("连接成功");
             } catch (IOException e) {
