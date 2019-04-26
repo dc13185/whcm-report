@@ -31,6 +31,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTypeVo"/>
         where type_id = #{typeId}
     </select>
+
+    <select id="selectTypeByProId" parameterType="Integer" resultMap="TypeResult">
+         SELECT t.* FROM report_program p
+         LEFT JOIN report_type t ON t.type_id = p.type_id
+         WHERE p.program_id = #{programId}
+    </select>
         
     <insert id="insertType" parameterType="Type" useGeneratedKeys="true" keyProperty="typeId">
         insert into report_type

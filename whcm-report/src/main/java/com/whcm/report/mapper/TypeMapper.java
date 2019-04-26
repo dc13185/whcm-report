@@ -60,5 +60,10 @@ public interface TypeMapper
 	public int deleteTypeByIds(String[] typeIds);
 
 	public List<Type> selectTypeAll();
+
+
+	Type selectTypeByProId(Integer program_id);
+
+
 	
 }

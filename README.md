@@ -72,7 +72,7 @@ webSocket地址 :/wx/websocket/link
 | /wx/webSocket/sendMassage | wxOpenId：openId<br>avatarUrl:头像<br> nickname:昵称 <br> msg:消息 | 返回success代表成功 |
 
 
-### 获取点赞数 评论数接口
+### 获取点赞数 评论；‘1·数接口
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
 | /wx/exhibition/toMyMian | wxUserOpenId：openId | status:1 代表评论成功 0 评论不成功 <br> comments:评论数 fabulous:点赞数和投票数的总和 |

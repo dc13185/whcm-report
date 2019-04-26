@@ -53,5 +53,8 @@ public interface ITypeService
      * @return 结果
      */
 	public int deleteTypeByIds(String ids);
+
+
+	Type selectTypeByProId(Integer program_id);
 	
 }

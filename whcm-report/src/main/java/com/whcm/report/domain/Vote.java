@@ -21,6 +21,10 @@ public class Vote
 	private Integer voteId;
 	/** 节目Id */
 	private Integer programId;
+
+	/** 类型id */
+	private Integer typeId;
+
 	/** 用户id */
 	private String xwUserOpenid;
 

@@ -115,11 +115,13 @@ public class WxCommentController {
     public Map vote( String xwUserOpenid, String programId){
         Map result = new HashMap<>(2);
         Vote vote = new Vote();
+
         vote.setXwUserOpenid(xwUserOpenid);
         vote.setProgramId(Integer.parseInt(programId));
+        Type type = typeService.selectTypeByProId(vote.getProgramId());
+        vote.setTypeId(type.getTypeId());
 
         synchronized(xwUserOpenid.intern()){
-            Type type = typeService.selectTypeById(8);
             if(type.getIsComment() == 1){
                 Vote falg = voteService.selectVoteById(vote);
                 if(falg != null){
@@ -127,21 +129,12 @@ public class WxCommentController {
                     result.put("status",0);
                     result.put("msg","请勿重复投票");
                 }else{
-                    //没有投票过，查询有没有投票三次
-                    Integer redCount = voteService.selectVotesByOpenId(xwUserOpenid);
-                    if(redCount!=null && redCount >= COUNT){
-                        //投票次数上限
-                        result.put("status",0);
-                        result.put("msg","投票次数上限");
-                    }else{
-                        voteService.insertVote(vote);
-                        List<Object> votes = voteService.selectAllVotes();
-                        String sendMassage = JSONObject.toJSONString(votes);
-                        WebSocketServer.sendInfo(sendMassage);
-
-                        result.put("status",1);
-                        result.put("msg","投票成功");
-                    }
+                    voteService.insertVote(vote);
+                    List<Object> votes = voteService.selectAllVotes();
+                    String sendMassage = JSONObject.toJSONString(votes);
+                    WebSocketServer.sendInfo(sendMassage);
+                    result.put("status",1);
+                    result.put("msg","投票成功");
                 }
             }else{
                 result.put("status",0);

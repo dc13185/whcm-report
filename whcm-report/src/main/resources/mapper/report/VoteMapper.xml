@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="voteId"    column="vote_id"    />
         <result property="programId"    column="program_id"    />
         <result property="xwUserOpenid"    column="wx_user_id"    />
+        <result property="typeId"    column="type_id"    />
     </resultMap>
 	
 	<sql id="selectVoteVo">
@@ -25,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectVoteById" parameterType="Vote" resultMap="VoteResult">
         <include refid="selectVoteVo"/>
-        where wx_user_id = #{xwUserOpenid} and program_id = #{programId}
+        where wx_user_id = #{xwUserOpenid} and program_id = #{programId} and type_id = #{typeId}
     </select>
 
     <select id="selectVotesByOpenId" parameterType="Vote" resultType="Integer" >
@@ -37,7 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectAllVotes" resultType="java.util.HashMap">
-         SELECT program_id,COUNT(vote_id) as votes FROM report_vote GROUP BY  program_id ORDER BY program_id
+         SELECT program_id,type_id,COUNT(vote_id) as votes FROM report_vote GROUP BY  program_id
     </select>
 
     <select id="selectVoteCount" resultType="java.lang.String">
@@ -49,10 +50,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="programId != null  ">program_id,</if>
 			<if test="xwUserOpenid != null  and xwUserOpenid != ''  ">wx_user_id,</if>
+            <if test="typeId != null  and typeId != ''  ">type_id,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="programId != null  ">#{programId},</if>
 			<if test="xwUserOpenid != null  and xwUserOpenid != ''  ">#{xwUserOpenid},</if>
+            <if test="typeId != null  and typeId != ''  ">#{typeId},</if>
          </trim>
     </insert>
 	 
