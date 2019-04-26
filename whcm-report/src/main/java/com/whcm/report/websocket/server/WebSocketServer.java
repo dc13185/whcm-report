@@ -1,5 +1,6 @@
 package com.whcm.report.websocket.server;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.whcm.report.service.IVoteService;
@@ -7,9 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -21,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @Slf4j
 @Component
-@ServerEndpoint("/wx/websocket/link")
+@ServerEndpoint("/wx/websocket/link/{typeId}")
 public class WebSocketServer {
 
         private IVoteService voteService = SpringUtils.getBean(IVoteService.class);
@@ -39,18 +42,31 @@ public class WebSocketServer {
         /**
          * 连接建立成功调用的方法*/
         @OnOpen
-        public void onOpen(Session session) {
+        public void onOpen(Session session, @PathParam("typeId") String typeId) {
             this.session = session;
             //加入set中
             webSocketSet.add(this);
             //在线数加1
             //addOnlineCount();
-            String votes = voteService.selectVoteCount();
-
-            WebSocketServer.onlineCount = Integer.parseInt(votes);
+            String counts = voteService.selectVoteCount(Integer.parseInt(typeId));
+            WebSocketServer.onlineCount = Integer.parseInt(counts);
+            //票数详情
+            List<Object> votes = voteService.selectAllVotes();
+            String votesMassage = JSONObject.toJSONString(votes);
             try {
-                sendMessage("连接成功");
+                Map<String,Object> map= new HashMap(2);
+                map.put("votes",votesMassage);
+                map.put("count",WebSocketServer.onlineCount);
+                // 定义JackJson 对象
+                ObjectMapper mapper = new ObjectMapper();
+                //将map转换成JSON字符串
+                String image_json = mapper.writeValueAsString(map);
+
+                for (WebSocketServer item : webSocketSet) {
+                    item.sendMessage(image_json);
+                }
             } catch (IOException e) {
+                e.printStackTrace();
                 log.error("websocket IO异常");
             }
          }
@@ -105,22 +121,21 @@ public class WebSocketServer {
          * 群发自定义消息
          * */
         public static void sendInfo(String message)  {
-            for (WebSocketServer item : webSocketSet) {
-                try {
-
-                    Map<String,Object> map= new HashMap(2);
-                    map.put("votes",message);
-                    map.put("count",++WebSocketServer.onlineCount);
-                    // 定义JackJson 对象
-                    ObjectMapper mapper = new ObjectMapper();
-                    //将map转换成JSON字符串
-                    String image_json = mapper.writeValueAsString(map);
+            try {
+                Map<String,Object> map= new HashMap(2);
+                map.put("votes",message);
+                map.put("count",++WebSocketServer.onlineCount);
+                // 定义JackJson 对象
+                ObjectMapper mapper = new ObjectMapper();
+                //将map转换成JSON字符串
+                String image_json = mapper.writeValueAsString(map);
+                for (WebSocketServer item : webSocketSet) {
                     item.sendMessage(image_json);
-
-                } catch (IOException e) {
-                    continue;
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
          }
 
         public static synchronized int getOnlineCount() {  return onlineCount;}

@@ -65,7 +65,8 @@
 | /wx/comment/vote | programId：节目id<br>xwUserOpenid:openId  | status:1 代表评论成功 0 评论不成功 <br> msg:返回信息 |
 
 
-webSocket地址 :/wx/websocket/link
+webSocket地址 :/wx/websocket/link/{typeId}
+
 ### 留言板留言
 | 地址  | 请求参数 | 响应参数 |
 |:------: | :------: | :------: |
@@ -96,4 +97,9 @@ webSocket地址 :/wx/websocket/link
 |:------: | :------: | :------: |
 | /wx/webSocket/getMassage | count:返回条数 为20的倍数 <br> 如写 count:1 返回20条 count2:返回40条 | status:1 代表评论成功 0 评论不成功 <br> messageList:返回信息 |
 
+
+### 修改院系投票开关
+| 地址  | 请求参数 | 响应参数 |
+|:------: | :------: | :------: |
+| /wx/comment/editTypeStatus | typeId:院系id <br> status:状态 1可以投票 0不能投票 | status:1 成功 0 异常|
 

@@ -112,7 +112,7 @@ public class VoteServiceImpl implements IVoteService
 	}
 
 	@Override
-	public String selectVoteCount() {
-		return voteMapper.selectVoteCount();
+	public String selectVoteCount(Integer typeId) {
+		return voteMapper.selectVoteCount( typeId);
 	}
 }

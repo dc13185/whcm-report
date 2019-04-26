@@ -126,7 +126,7 @@ public class WxCommentController {
                 Vote falg = voteService.selectVoteById(vote);
                 if(falg != null){
                     //已经投票过了
-                    result.put("status",0);
+                    result.put("stat0us",0);
                     result.put("msg","请勿重复投票");
                 }else{
                     voteService.insertVote(vote);
@@ -144,6 +144,25 @@ public class WxCommentController {
             return result;
         }
 
+    }
+
+
+    @RequestMapping("/editTypeStatus")
+    public Map editTypeStatus(String typeId,String status){
+        Map result = new HashMap<>(2);
+
+        Type type = new Type();
+        type.setTypeId(Integer.parseInt(typeId));
+        type.setIsComment(Integer.parseInt(status));
+        try {
+            typeService.updateType(type);
+            result.put("status",1);
+        }catch (Exception e){
+            result.put("status",0);
+            result.put("msg",e.getMessage());
+        }
+
+        return result ;
     }
 
 

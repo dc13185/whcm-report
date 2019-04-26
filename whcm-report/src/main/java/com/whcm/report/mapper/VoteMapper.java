@@ -101,7 +101,7 @@ public interface VoteMapper
 	* @Author: dong.chao
 	* @Date: 2019/4/21 
 	*/ 
-	public String selectVoteCount();
+	public String selectVoteCount(Integer typeId);
 
 
 }
