@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT c.* , p.* FROM report_comment c
         LEFT JOIN report_program p ON c.program_id = p.program_id
         WHERE c.xw_user_openid = #{wxUserOpenId}
-        order by c.comment_id desc
+        order by c.comment_id asc
     </select>
     
 </mapper>

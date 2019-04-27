@@ -26,7 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectVoteById" parameterType="Vote" resultMap="VoteResult">
         <include refid="selectVoteVo"/>
-        where wx_user_id = #{xwUserOpenid} and program_id = #{programId} and type_id = #{typeId}
+        where wx_user_id = #{xwUserOpenid}  and type_id = #{typeId}
     </select>
 
     <select id="selectVotesByOpenId" parameterType="Vote" resultType="Integer" >
