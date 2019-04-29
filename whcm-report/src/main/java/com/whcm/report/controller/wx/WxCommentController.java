@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: dong.chao
@@ -118,6 +116,45 @@ public class WxCommentController {
 
         vote.setXwUserOpenid(xwUserOpenid);
         vote.setProgramId(Integer.parseInt(programId));
+        Type type = typeService.selectTypeByProId(vote.getProgramId());
+        vote.setTypeId(type.getTypeId());
+
+        synchronized(xwUserOpenid.intern()){
+            if(type.getIsComment() == 1){
+                Vote falg = voteService.selectVoteById(vote);
+                if(falg != null){
+                    //已经投票过了
+                    result.put("stat0us",0);
+                    result.put("msg","请勿重复投票");
+                }else{
+                    voteService.insertVote(vote);
+                    List<Object> votes = voteService.selectAllVotes();
+                    String sendMassage = JSONObject.toJSONString(votes);
+                    WebSocketServer.sendInfo(sendMassage);
+                    result.put("status",1);
+                    result.put("msg","投票成功");
+                }
+            }else{
+                result.put("status",0);
+                result.put("msg","投票尚未开始");
+            }
+
+            return result;
+        }
+
+    }
+
+    @RequestMapping("/voteTest")
+    public Map voteTest(){
+        String xwUserOpenid = UUID.randomUUID().toString();
+        int programIds[] ={110 ,112 ,113,132};
+        Random random = new Random();
+
+        Map result = new HashMap<>(2);
+        Vote vote = new Vote();
+
+        vote.setXwUserOpenid(xwUserOpenid);
+        vote.setProgramId(programIds[random.nextInt(4)]);
         Type type = typeService.selectTypeByProId(vote.getProgramId());
         vote.setTypeId(type.getTypeId());
 
